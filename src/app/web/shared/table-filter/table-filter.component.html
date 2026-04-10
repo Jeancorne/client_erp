@@ -1,0 +1,20 @@
+<nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue().length > 0" [nzDropdownMenu]="menu">
+  <span nz-icon nzType="search"></span>
+</nz-filter-trigger>
+
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown p-2">
+    <div class="search-box">
+      <input type="text" nz-input [placeholder]="placeholder()" [ngModel]="searchValue()"
+        (ngModelChange)="onSearchChange($event)" class="mb-2" />
+      <div class="d-flex justify-content-between">
+        <button nz-button nzSize="small" nzType="primary" (click)="visible = false">
+          Cerrar
+        </button>
+        <button nz-button nzSize="small" (click)="reset()">
+          Reiniciar
+        </button>
+      </div>
+    </div>
+  </div>
+</nz-dropdown-menu>

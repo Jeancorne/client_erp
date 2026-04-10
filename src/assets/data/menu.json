@@ -3,7 +3,7 @@
         "id": "M1",
         "moduleCode": "MASTER",
         "name": "Master Central",
-        "icon": "settings_suggest",
+        "icon": "bars",
         "sequence": 1,
         "items": [
             { "id": "M1-1", "name": "Estado de Suscripción", "routePath": "/master/subscription", "sequence": 1 },
@@ -14,7 +14,7 @@
         "id": "M2",
         "moduleCode": "DESKTOP",
         "name": "Mi Escritorio",
-        "icon": "dashboard",
+        "icon": "bars",
         "sequence": 2,
         "items": [
             { "id": "M2-1", "name": "Notificaciones", "routePath": "/desktop/notifications", "sequence": 1 },
@@ -26,7 +26,7 @@
         "id": "M3",
         "moduleCode": "CORE",
         "name": "Estructura Organizativa",
-        "icon": "account_tree",
+        "icon": "bars",
         "sequence": 3,
         "items": [
             { "id": "M3-1", "name": "Holding / Empresa", "routePath": "/core/companies", "sequence": 1 },
@@ -40,7 +40,7 @@
         "id": "M4",
         "moduleCode": "CORE",
         "name": "Seguridad y Maestros",
-        "icon": "admin_panel_settings",
+        "icon": "bars",
         "sequence": 4,
         "items": [
             { "id": "M4-1", "name": "Usuarios y Acceso", "routePath": "/core/users", "sequence": 1 },
@@ -54,7 +54,7 @@
         "id": "M5",
         "moduleCode": "CRM",
         "name": "Gestión Comercial",
-        "icon": "handshake",
+        "icon": "bars",
         "sequence": 5,
         "items": [
             { "id": "M5-1", "name": "Leads / Prospectos", "routePath": "/crm/leads", "sequence": 1 },
@@ -66,7 +66,7 @@
         "id": "M6",
         "moduleCode": "SALE",
         "name": "Operaciones de Venta",
-        "icon": "shopping_cart",
+        "icon": "bars",
         "sequence": 6,
         "items": [
             { "id": "M6-1", "name": "Cotizaciones", "routePath": "/sale/quotations", "sequence": 1 },
@@ -78,7 +78,7 @@
         "id": "M8",
         "moduleCode": "INV",
         "name": "Gestión de Inventarios",
-        "icon": "inventory_2",
+        "icon": "bars",
         "sequence": 8,
         "items": [
             { "id": "M8-1", "name": "Maestro de Productos", "routePath": "/inv/products", "sequence": 1 },
@@ -90,7 +90,7 @@
         "id": "M9",
         "moduleCode": "ACC",
         "name": "Finanzas y Cumplimiento",
-        "icon": "account_balance",
+        "icon": "bars",
         "sequence": 9,
         "items": [
             {

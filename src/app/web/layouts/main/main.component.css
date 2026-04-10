@@ -14,36 +14,50 @@ nz-select {
   color: #1890ff;
 }
 
-/* .sideBar{  
-  min-width: 250px !important;
-} */
+/* ====== GLOBAL ====== */
 
-.layout {
+
+.layout,
+.layout .ant-layout {
   min-height: 100vh;
+  background: #e6e9ee   !important; /* 👈 gris correcto */
 }
 
 .selectModule {
   margin: 16px;
 }
 
+/* ====== HEADER ====== */
 nz-header {
   background: #fff;
   padding: 0;
+
+  /* separación sutil */
+  border-bottom: 1px solid #e8e8e8;
 }
 
+/* ====== CONTENT ====== */
 nz-content {
   margin: 24px 16px 0;
 }
 
-.inner-content {  
-  background: #fff;
+/* ====== INNER CONTENT ====== */
+.inner-content {
+  background: #ffffff;
   min-height: 360px;
+  height: 98%;
+  padding: 16px;  
+  border-radius: 2px;
+  border: 1px solid #eaeaea;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
+/* ====== FOOTER ====== */
 nz-footer {
   text-align: center;
 }
 
+/* ====== TRIGGER ====== */
 .trigger {
   font-size: 18px;
   line-height: 64px;
@@ -56,6 +70,6 @@ nz-footer {
   color: #1890ff;
 }
 
-.mainInit:hover{
+.mainInit:hover {
   color: #1890ff;
 }
