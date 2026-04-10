@@ -2,21 +2,30 @@
   <app-breadcrumb [items]="breadcrumbItems"></app-breadcrumb>
   <div class="contentBody mt-3">
     <nz-spin [nzSize]="'large'" [nzSpinning]="isLoading()" nzTip="Cargando...">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="mb-0">Listado de Empresas</h4>
-        <button nz-button nzType="primary" (click)="addCompany()">
+      <div class="d-flex justify-content-between align-items-center mb-3">        
+        <button nz-button nzType="primary" (click)="addCompany()" class="btn-flex">
           <span nz-icon nzType="plus"></span> Nueva Empresa
         </button>
       </div>
       <div>
-        <nz-table #sortTable [nzData]="filteredCompanies()" [nzBordered]="true" [nzLoading]="isLoading()"
-          [nzFrontPagination]="true" [nzPageSize]="10" nzTableLayout="fixed">
+        <nz-table 
+          #sortTable 
+          [nzData]="filteredCompanies()" 
+          [nzLoading]="isLoading()"
+          [nzFrontPagination]="true" 
+          [nzPageSize]="10"
+          [nzBordered]="true"
+          nzTableLayout="fixed"
+        >
           <thead>
             <tr>
-              <th nzCustomFilter nzShowSort [nzSortFn]="sortName">
-                Razón Social
-                <app-table-filter [placeholder]="'Buscar por nombre'" [searchValue]="searchValue()"
-                  (searchChange)="searchValue.set($event)"></app-table-filter>
+              <th nzCustomFilter nzShowSort [nzSortFn]="sortName" class="header-with-filter">
+                <span class="column-title">Razón Social</span>
+                <app-table-filter 
+                  [placeholder]="'Buscar por nombre'" 
+                  [searchValue]="searchValue()" 
+                  (searchChange)="searchValue.set($event)"
+                ></app-table-filter>
               </th>
               <th nzShowSort [nzSortFn]="sortNit">NIT / Identificación</th>
               <th nzShowSort [nzSortFn]="sortCurrency">Moneda</th>

@@ -1,5 +1,18 @@
 {
-    
+    "succeeded": true,
+    "message": null,
+    "errors": null,
+    "data": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwZTNmM2M4Ny0xYTA0LTQ1ZjItOTk3Zi1hZTVmMzNjNTU1ZTAiLCJ1bmlxdWVfbmFtZSI6ImFkbWluMSIsImNvbXBhbnlfaWQiOiI0MDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDEiLCJpc19hZG1pbiI6InRydWUiLCJleHAiOjE3NzU4OTA0OTUsImlzcyI6Imlzc3Vlci5NYXN0ZXIiLCJhdWQiOiJhdWRpZW5jZS5NYXN0ZXIifQ.Zsh6aT7YhZRHBBqDLVbEYX3g2ZJhI45hH0KlV5H32ME",
+        "user": {
+            "id": "0e3f3c87-1a04-45f2-997f-ae5f33c555e0",
+            "username": "admin1",
+            "email": "admin1@gmail.com",
+            "firstName": "Carlos",
+            "lastName": "Gómez",
+            "companyId": "40000000-0000-0000-0000-000000000001",
+            "isMainAdmin": true
+        },
         "menus": [
             {
                 "id": "10000000-0000-0000-0000-000000000001",
@@ -1382,5 +1395,6 @@
                 ]
             }
         ]
-    }
-    
+    },
+    "traceId": "4f1515a96480ce993440f22d3be335f2"
+}

@@ -1,17 +1,41 @@
- .search-box {
-      padding: 8px;
-    }
+:host {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 8px; /* Espacio entre el texto/ordenamiento y el filtro */
+}
 
-    .search-box input {
-      width: 188px;
-      margin-bottom: 8px;
-      display: block;
-    }
+/* Aumentar el área de clic (Hitbox) para mejorar la UX */
+::ng-deep .ant-table-filter-trigger {
+  padding: 8px 12px !important; /* Más ancho para capturar mejor el click */
+  margin: -8px -4px !important; /* Compensa el padding para no desplazar el layout */
+  transition: background-color 0.3s, color 0.3s;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .search-box button {
-      width: 90px;
-    }
+::ng-deep .ant-table-filter-trigger:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+  color: #1890ff;
+}
 
-    .search-button {
-      margin-right: 8px;
-    }
+::ng-deep .ant-table-filter-trigger.active {
+  color: #1890ff;
+}
+
+.search-box {
+  padding: 8px;
+  width: 220px;
+}
+
+.search-box input {
+  margin-bottom: 12px;
+}
+
+.d-flex {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}

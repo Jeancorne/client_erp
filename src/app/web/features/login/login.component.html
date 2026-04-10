@@ -1,0 +1,40 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-logo">
+      <img src="assets/logo.svg" alt="ERP Logo" onerror="this.src='https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg'" />
+      <h2>ERP Umbrella</h2>
+      <p>Gestión Empresarial Inteligente</p>
+    </div>
+
+    <form nz-form [formGroup]="loginForm" (ngSubmit)="submitForm()">
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Por favor ingresa tu usuario">
+          <nz-input-group nzPrefixIcon="user">
+            <input type="text" nz-input formControlName="userName" placeholder="Usuario" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Por favor ingresa tu contraseña">
+          <nz-input-group nzPrefixIcon="lock">
+            <input type="password" nz-input formControlName="password" placeholder="Contraseña" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <div class="mb-3 d-flex justify-content-between">
+        <label nz-checkbox formControlName="remember">Recordarme</label>
+        <a class="login-form-forgot">¿Olvidaste tu contraseña?</a>
+      </div>
+
+      <button nz-button class="login-form-button" [nzType]="'primary'" [nzLoading]="isLoading()">
+        Iniciar Sesión
+      </button>
+    </form>
+
+    <div class="login-footer">
+      <p>ERP Umbrella ©2026</p>
+    </div>
+  </div>
+</div>

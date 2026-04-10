@@ -123,11 +123,11 @@
   color: inherit !important;
 }
 
-
-/* .cdk-global-overlay-wrapper,
-.cdk-overlay-container {
-  z-index: 99999 !important;
-} */
+.btn-flex {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
 
 .max-with-75 {
   max-width: 75% !important;

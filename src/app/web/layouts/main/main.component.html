@@ -3,13 +3,11 @@
         [nzCollapsedWidth]="0">
         <div class="selectModule">
             <div (click)="navigation('/')" class="text-center pointer mainInit">
-                <p><strong>
-                        Inicio
-                    </strong></p>
+                <p><strong>Inicio</strong></p>
             </div>
         </div>
         <div class="selectModule">
-            <nz-select (ngModelChange)="changeModule($event)" nzShowSearch nzAllowClear nzPlaceHolder="Seleccionar"
+            <nz-select (ngModelChange)="changeModule($event)" nzShowSearch nzAllowClear nzPlaceHolder="Seleccionar Módulo"
                 [(ngModel)]="selectedValue">
                 @for (mod of listModule(); track mod.id) {
                     <nz-option [nzLabel]="mod.nameModule!" [nzValue]="mod.id"></nz-option>
@@ -18,27 +16,40 @@
         </div>
         <ul nz-menu nzTheme="light" nzMode="inline">
             @for (menu of lsMenus(); track menu.id) {
-                <li nz-submenu [nzTitle]="menu.name" [nzIcon]="menu.icon ?? null" [nzOpen]="false">
-                    <ul>
-                        @for (item of menu.items; track item.id) {
-                            @if (!item.items || item.items.length === 0) {
-                                <li (click)="navigation(item.routePath!)" nz-menu-item>
-                                    <p>{{ item.name }}</p>
-                                </li>
-                            } @else {
-                                <li nz-submenu [nzTitle]="item.name" [nzIcon]="item.icon ?? null">
-                                    <ul>
-                                        @for (subItem of item.items; track subItem.id) {
-                                            <li (click)="navigation(subItem.routePath!)" nz-menu-item>
-                                                <p>{{ subItem.name }}</p>
-                                            </li>
-                                        }
-                                    </ul>
-                                </li>
-                            }
+                @if (!menu.items || menu.items.length === 0) {
+                    <!-- NIVEL 1: Item Directo (Sin Hijos) -->
+                    <li (click)="navigation(menu.routePath!)" nz-menu-item>
+                        @if (menu.icon) {
+                            <span nz-icon [nzType]="menu.icon"></span>
                         }
-                    </ul>
-                </li>
+                        <span>{{ menu.name }}</span>
+                    </li>
+                } @else {
+                    <!-- NIVEL 1: Con Submenú -->
+                    <li nz-submenu [nzTitle]="menu.name" [nzIcon]="menu.icon ?? null" [nzOpen]="false">
+                        <ul>
+                            @for (item of menu.items; track item.id) {
+                                @if (!item.items || item.items.length === 0) {
+                                    <!-- NIVEL 2: Item Directo -->
+                                    <li (click)="navigation(item.routePath!)" nz-menu-item>
+                                        {{ item.name }}
+                                    </li>
+                                } @else {
+                                    <!-- NIVEL 2: Con Submenú -->
+                                    <li nz-submenu [nzTitle]="item.name" [nzIcon]="item.icon ?? null">
+                                        <ul>
+                                            @for (subItem of item.items; track subItem.id) {
+                                                <li (click)="navigation(subItem.routePath!)" nz-menu-item>
+                                                    {{ subItem.name }}
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </li>
+                }
             }
         </ul>        
     </nz-sider>
@@ -49,7 +60,7 @@
                     <span class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
                         (click)="isCollapsed = !isCollapsed"></span>
                 </div>
-                <div style="display: flex;margin-left: auto;">
+                <div style="display: flex; margin-left: auto;">
                     <div style="margin-left: auto; margin-right: 20px;">
                         <a nz-dropdown [nzPlacement]="'bottomRight'" [nzDropdownMenu]="menu">
                             <i class="fas fa-user fa-fw iconUser"></i>
@@ -61,15 +72,13 @@
                         </nz-dropdown-menu>
                     </div>                  
                 </div>
-
             </div>
-
         </nz-header>
         <nz-content>
             <div class="inner-content">
                 <router-outlet></router-outlet>
             </div>
         </nz-content>
-        <nz-footer>ERP Umbrella ©2026 </nz-footer>
+        <nz-footer>ERP Umbrella ©2026</nz-footer>
     </nz-layout>
 </nz-layout>

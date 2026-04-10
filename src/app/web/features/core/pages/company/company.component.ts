@@ -50,10 +50,7 @@ interface Company {
   styleUrl: './company.component.css'
 })
 export class CompanyComponent implements OnInit {
-  breadcrumbItems = [
-    { name: 'Core System' },
-    { name: 'Empresas' }
-  ];
+  breadcrumbItems = [{ name: 'Estructura Organizativa' }, { name: 'Empresas' }];
 
   // Estado de los datos
   companies = signal<Company[]>([]);
@@ -85,13 +82,13 @@ export class CompanyComponent implements OnInit {
   async loadCompanies() {
     this.isLoading.set(true);
     await new Promise(resolve => setTimeout(resolve, 800));
-    
+
     this.companies.set([
       { id: '1', name: 'Acme Corporation S.A.', nitTaxId: '900.123.456-7', currency: 'COP', personType: 'Jurídica', isMaster: true, isActive: true },
       { id: '2', name: 'Acme Logistics LLC', nitTaxId: '800.987.654-3', currency: 'USD', personType: 'Jurídica', isMaster: false, isActive: true },
       { id: '3', name: 'Globex Corp', nitTaxId: '700.555.444-1', currency: 'EUR', personType: 'Jurídica', isMaster: false, isActive: false }
     ]);
-    
+
     this.isLoading.set(false);
   }
 

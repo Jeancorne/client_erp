@@ -1,4 +1,4 @@
-import { Component, signal, computed, OnInit } from '@angular/core';
+import { Component, signal, computed, OnInit, inject } from '@angular/core';
 import { RouterLink, RouterOutlet, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
@@ -9,18 +9,8 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { FormsModule } from '@angular/forms';
 
-// Importación del archivo JSON de menús (Simulación de DB/API)
-import menuData from '../../../../assets/data/menu.json';
-
-interface MenuItem {
-  id: string;
-  moduleCode?: string;
-  name: string;
-  routePath?: string;
-  sequence: number;
-  icon?: string | null;
-  items?: MenuItem[];
-}
+import { AuthService } from '../../../core/services/auth.service';
+import { MenuItem } from '../../../core/models/auth.models';
 
 @Component({
   selector: 'app-main-layout',
@@ -41,59 +31,45 @@ interface MenuItem {
   styleUrl: './main.component.css'
 })
 export class MainLayout implements OnInit {
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
   isCollapsed = false;
   
-  // Signals para el estado del menú
+  // Signal para el módulo seleccionado actualmente
   selectedModuleId = signal<string>(''); 
-  fullMenuSource = signal<MenuItem[]>([]);
-  isLoading = signal<boolean>(true);
+
+  // Datos del usuario desde el Signal global
+  currentUser = this.authService.currentUser;
 
   // Propiedad para el ngModel del nz-select
   get selectedValue() { return this.selectedModuleId(); }
   set selectedValue(val: string) { this.selectedModuleId.set(val); }
   
-  // listModule extraído dinámicamente de los datos del menú
+  // listModule extraído dinámicamente de los menús REALES del usuario
   listModule = computed(() => {
-    const modules = this.fullMenuSource()
-      .map(m => m.moduleCode)
-      .filter((value, index, self) => value && self.indexOf(value) === index);
-    
-    return modules.map(m => ({ id: m, nameModule: m }));
+    const menus = this.authService.userMenus();
+    return menus.map(m => ({ id: m.id, nameModule: m.name }));
   });
 
   // Menú filtrado reactivamente por el módulo seleccionado
-  lsMenus: any = computed(() => {
+  lsMenus = computed(() => {
     const moduleId = this.selectedModuleId();
+    const menus = this.authService.userMenus();
+    
     if (!moduleId) return [];
-    return this.fullMenuSource().filter(menu => menu.moduleCode === moduleId);
+    
+    // En la estructura real, el "módulo" es el primer nivel del menú
+    const selectedModule = menus.find(m => m.id === moduleId);
+    return selectedModule ? selectedModule.items || [] : [];
   });
 
-  constructor(private router: Router) {}
-
-  async ngOnInit() {
-    await this.loadMenuData();
-  }
-
-  /**
-   * Simula la llamada al backend para obtener los menús del usuario
-   */
-  async loadMenuData() {
-    this.isLoading.set(true);
-    
-    // Simulamos un delay de red de 500ms
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    // Cargamos los datos del JSON importado
-    const data = menuData as MenuItem[];
-    this.fullMenuSource.set(data);
-    
-    // Seleccionamos el primer módulo disponible por defecto
-    if (data.length > 0 && data[0].moduleCode) {
-      this.selectedModuleId.set(data[0].moduleCode);
+  ngOnInit() {
+    // Seleccionamos el primer módulo automáticamente si hay menús cargados
+    const currentMenus = this.authService.userMenus();
+    if (currentMenus.length > 0 && !this.selectedModuleId()) {
+      this.selectedModuleId.set(currentMenus[0].id);
     }
-    
-    this.isLoading.set(false);
-    console.log('Menú cargado exitosamente desde el JSON.');
   }
 
   navigation(path: string | undefined) {
@@ -103,11 +79,11 @@ export class MainLayout implements OnInit {
   }
 
   changeModule(modId: string) {
-    console.log('Cambiando al módulo:', modId);
+    console.log('Cambiando a módulo:', modId);
   }
 
   logout() {
-    console.log('Cerrando sesión del ERP...');
+    this.authService.logout();
     this.router.navigate(['/login']);
   }
 }
