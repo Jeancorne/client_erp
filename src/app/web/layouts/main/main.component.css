@@ -1,0 +1,61 @@
+.shadown {
+  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+}
+
+nz-select {
+  width: 170px;
+}
+
+.iconUser {
+  color: black;
+}
+
+.iconUser:hover {
+  color: #1890ff;
+}
+
+/* .sideBar{  
+  min-width: 250px !important;
+} */
+
+.layout {
+  min-height: 100vh;
+}
+
+.selectModule {
+  margin: 16px;
+}
+
+nz-header {
+  background: #fff;
+  padding: 0;
+}
+
+nz-content {
+  margin: 24px 16px 0;
+}
+
+.inner-content {  
+  background: #fff;
+  min-height: 360px;
+}
+
+nz-footer {
+  text-align: center;
+}
+
+.trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.trigger:hover {
+  color: #1890ff;
+}
+
+.mainInit:hover{
+  color: #1890ff;
+}

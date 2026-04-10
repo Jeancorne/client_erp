@@ -1,0 +1,50 @@
+<div class="company-container">
+  <app-breadcrumb [items]="breadcrumbItems"></app-breadcrumb>
+
+  <nz-page-header nzTitle="Holding / Empresas" nzSubtitle="Administración de la estructura legal del grupo">
+    <nz-page-header-extra>
+      <button nz-button nzType="primary" (click)="addCompany()">
+        <span nz-icon nzType="plus"></span> Nueva Empresa
+      </button>
+    </nz-page-header-extra>
+  </nz-page-header>
+
+  <nz-card>
+    <nz-table #basicTable [nzData]="companies()" [nzLoading]="isLoading()">
+      <thead>
+        <tr>
+          <th>Razón Social</th>
+          <th>NIT / Identificación</th>
+          <th>Moneda</th>
+          <th>Tipo</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (data of basicTable.data; track data.id) {
+        <tr>
+          <td>
+            <strong>{{ data.name }}</strong>
+            @if (data.isMaster) {
+            <nz-tag nzColor="gold" class="ms-2">Master</nz-tag>
+            }
+          </td>
+          <td>{{ data.nitTaxId }}</td>
+          <td>{{ data.currency }}</td>
+          <td>{{ data.personType }}</td>
+          <td>
+            <nz-badge [nzStatus]="data.isActive ? 'success' : 'error'"
+              [nzText]="data.isActive ? 'Activo' : 'Inactivo'"></nz-badge>
+          </td>
+          <td>
+            <a (click)="editCompany(data)">Editar</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a class="text-danger">Eliminar</a>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </nz-table>
+  </nz-card>
+</div>

@@ -1,0 +1,9 @@
+<div class="breadcrum">
+    <nz-breadcrumb>
+        @for (bread of items; track bread.name) {
+            <nz-breadcrumb-item>
+                {{ bread.name }}
+            </nz-breadcrumb-item>
+        }
+    </nz-breadcrumb>
+</div>

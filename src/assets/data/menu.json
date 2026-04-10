@@ -1,0 +1,110 @@
+[
+    {
+        "id": "M1",
+        "moduleCode": "MASTER",
+        "name": "Master Central",
+        "icon": "settings_suggest",
+        "sequence": 1,
+        "items": [
+            { "id": "M1-1", "name": "Estado de Suscripción", "routePath": "/master/subscription", "sequence": 1 },
+            { "id": "M1-2", "name": "Módulos Autorizados", "routePath": "/master/modules", "sequence": 2 }
+        ]
+    },
+    {
+        "id": "M2",
+        "moduleCode": "DESKTOP",
+        "name": "Mi Escritorio",
+        "icon": "dashboard",
+        "sequence": 2,
+        "items": [
+            { "id": "M2-1", "name": "Notificaciones", "routePath": "/desktop/notifications", "sequence": 1 },
+            { "id": "M2-2", "name": "Agenda Comercial", "routePath": "/desktop/agenda", "sequence": 2 },
+            { "id": "M2-3", "name": "Aprobaciones Pendientes", "routePath": "/desktop/approvals", "sequence": 3 }
+        ]
+    },
+    {
+        "id": "M3",
+        "moduleCode": "CORE",
+        "name": "Estructura Organizativa",
+        "icon": "account_tree",
+        "sequence": 3,
+        "items": [
+            { "id": "M3-1", "name": "Holding / Empresa", "routePath": "/core/companies", "sequence": 1 },
+            { "id": "M3-2", "name": "Sedes / Sucursales", "routePath": "/core/branches", "sequence": 2 },
+            { "id": "M3-3", "name": "Unidades de Negocio", "routePath": "/core/business-units", "sequence": 3 },
+            { "id": "M3-4", "name": "Departamentos", "routePath": "/hr/departments", "sequence": 4 },
+            { "id": "M3-5", "name": "Cargos / Puestos", "routePath": "/hr/jobs", "sequence": 5 }
+        ]
+    },
+    {
+        "id": "M4",
+        "moduleCode": "CORE",
+        "name": "Seguridad y Maestros",
+        "icon": "admin_panel_settings",
+        "sequence": 4,
+        "items": [
+            { "id": "M4-1", "name": "Usuarios y Acceso", "routePath": "/core/users", "sequence": 1 },
+            { "id": "M4-2", "name": "Roles y Perfiles", "routePath": "/core/roles", "sequence": 2 },
+            { "id": "M4-3", "name": "Directorio de Terceros", "routePath": "/core/partners", "sequence": 3 },
+            { "id": "M4-4", "name": "Geografía Global", "routePath": "/core/geography", "sequence": 4 },
+            { "id": "M4-5", "name": "Catálogo de Impuestos", "routePath": "/core/taxes", "sequence": 5 }
+        ]
+    },
+    {
+        "id": "M5",
+        "moduleCode": "CRM",
+        "name": "Gestión Comercial",
+        "icon": "handshake",
+        "sequence": 5,
+        "items": [
+            { "id": "M5-1", "name": "Leads / Prospectos", "routePath": "/crm/leads", "sequence": 1 },
+            { "id": "M5-2", "name": "Oportunidades / Pipeline", "routePath": "/crm/opportunities", "sequence": 2 },
+            { "id": "M5-3", "name": "Casos de Soporte / Tickets", "routePath": "/crm/tickets", "sequence": 3 }
+        ]
+    },
+    {
+        "id": "M6",
+        "moduleCode": "SALE",
+        "name": "Operaciones de Venta",
+        "icon": "shopping_cart",
+        "sequence": 6,
+        "items": [
+            { "id": "M6-1", "name": "Cotizaciones", "routePath": "/sale/quotations", "sequence": 1 },
+            { "id": "M6-2", "name": "Pedidos de Venta", "routePath": "/sale/orders", "sequence": 2 },
+            { "id": "M6-3", "name": "Facturación Electrónica", "routePath": "/sale/invoices", "sequence": 3 }
+        ]
+    },
+    {
+        "id": "M8",
+        "moduleCode": "INV",
+        "name": "Gestión de Inventarios",
+        "icon": "inventory_2",
+        "sequence": 8,
+        "items": [
+            { "id": "M8-1", "name": "Maestro de Productos", "routePath": "/inv/products", "sequence": 1 },
+            { "id": "M8-2", "name": "Bodegas y Ubicaciones", "routePath": "/inv/locations", "sequence": 2 },
+            { "id": "M8-3", "name": "Kárdex de Movimientos", "routePath": "/inv/movements", "sequence": 3 }
+        ]
+    },
+    {
+        "id": "M9",
+        "moduleCode": "ACC",
+        "name": "Finanzas y Cumplimiento",
+        "icon": "account_balance",
+        "sequence": 9,
+        "items": [
+            {
+                "id": "M9-1",
+                "name": "Libro Mayor / Asientos",
+                "routePath": "/acc/entries",
+                "sequence": 1,
+                "items": [
+                    { "id": "M9-1-1", "name": "Listado de Asientos", "routePath": "/acc/entries/list", "sequence": 1 },
+                    { "id": "M9-1-2", "name": "Nuevo Asiento", "routePath": "/acc/entries/new", "sequence": 2 }
+                ]
+            },
+            { "id": "M9-2", "name": "Plan de Cuentas PUC", "routePath": "/acc/chart-of-accounts", "sequence": 2 },
+            { "id": "M9-3", "name": "Reportes Financieros", "routePath": "/acc/reports", "sequence": 3 }
+        ]
+    }
+]
