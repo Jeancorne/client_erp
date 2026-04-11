@@ -1,6 +1,5 @@
-import { Component, signal, computed, OnInit } from '@angular/core';
+import { Component, signal, OnInit, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -10,28 +9,20 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzDropdownModule } from 'ng-zorro-antd/dropdown';
+import { NzModalService, NzModalModule } from 'ng-zorro-antd/modal';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { BreadcrumbComponent } from '../../../../shared/breadcrumb/breadcrumb.component';
 import { TableFilterComponent } from '../../../../shared/table-filter/table-filter.component';
-
-interface Company {
-  id: string;
-  name: string;
-  nitTaxId: string;
-  currency: string;
-  personType: string;
-  isMaster: boolean;
-  isActive: boolean;
-}
+import { CompanyFormComponent } from '../../components/company-form/company-form.component';
+import { CompanyService } from '../../../../../core/services/core/company.service';
+import { Company } from '../../../../../core/models/company.models';
 
 @Component({
   selector: 'app-company',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
     NzTableModule,
     NzButtonModule,
     NzIconModule,
@@ -42,25 +33,24 @@ interface Company {
     NzDividerModule,
     BreadcrumbComponent,
     NzSpinModule,
-    NzInputModule,
-    NzDropdownModule,
-    TableFilterComponent
+    TableFilterComponent,
+    NzModalModule
   ],
   templateUrl: './company.component.html',
   styleUrl: './company.component.css'
 })
 export class CompanyComponent implements OnInit {
-  breadcrumbItems = [{ name: 'Estructura Organizativa' }, { name: 'Empresas' }];
+  private modal = inject(NzModalService);
+  private companyService = inject(CompanyService);
+  private message = inject(NzMessageService);
 
-  // Estado de los datos
+  breadcrumbItems = [{ name: 'Core System' }, { name: 'Empresas' }];
+
   companies = signal<Company[]>([]);
   isLoading = signal<boolean>(false);
-
-  // Estado de la búsqueda
   searchValue = signal<string>('');
-  searchVisible = false;
 
-  // Signal Computado para el filtrado reactivo
+  // Filtrado reactivo computado
   filteredCompanies = computed(() => {
     const term = this.searchValue().toLowerCase();
     const list = this.companies();
@@ -70,9 +60,9 @@ export class CompanyComponent implements OnInit {
 
   // Funciones de ordenamiento
   sortName = (a: Company, b: Company) => a.name.localeCompare(b.name);
-  sortNit = (a: Company, b: Company) => a.nitTaxId.localeCompare(b.nitTaxId);
-  sortCurrency = (a: Company, b: Company) => a.currency.localeCompare(b.currency);
-  sortType = (a: Company, b: Company) => a.personType.localeCompare(b.personType);
+  sortNit = (a: Company, b: Company) => (a.nitTaxId || '').localeCompare(b.nitTaxId || '');
+  sortCurrency = (a: Company, b: Company) => (a.coreCurrencyId || '').localeCompare(b.coreCurrencyId || '');
+  sortType = (a: Company, b: Company) => (a.personType || '').localeCompare(b.personType || '');
   sortStatus = (a: Company, b: Company) => (a.isActive === b.isActive ? 0 : a.isActive ? -1 : 1);
 
   ngOnInit() {
@@ -81,22 +71,39 @@ export class CompanyComponent implements OnInit {
 
   async loadCompanies() {
     this.isLoading.set(true);
-    await new Promise(resolve => setTimeout(resolve, 800));
-
-    this.companies.set([
-      { id: '1', name: 'Acme Corporation S.A.', nitTaxId: '900.123.456-7', currency: 'COP', personType: 'Jurídica', isMaster: true, isActive: true },
-      { id: '2', name: 'Acme Logistics LLC', nitTaxId: '800.987.654-3', currency: 'USD', personType: 'Jurídica', isMaster: false, isActive: true },
-      { id: '3', name: 'Globex Corp', nitTaxId: '700.555.444-1', currency: 'EUR', personType: 'Jurídica', isMaster: false, isActive: false }
-    ]);
-
-    this.isLoading.set(false);
+    try {
+      const data = await this.companyService.getAll();
+      this.companies.set(data);
+    } catch (error) {
+      this.message.error('Error al cargar la lista de empresas');
+      console.error(error);
+    } finally {
+      this.isLoading.set(false);
+    }
   }
 
-  resetSearch() {
-    this.searchValue.set('');
-    this.searchVisible = false;
+  openModal(data?: Company) {
+    const title = data ? 'Editar Empresa' : 'Registrar Nueva Empresa';
+    
+    const modalRef = this.modal.create({
+      nzTitle: title,
+      nzContent: CompanyFormComponent,
+      nzWidth: 800,
+      nzMaskClosable: false,
+      nzFooter: null,
+      nzData: {
+        companyData: data,
+        companies: this.companies()
+      }
+    });
+
+    modalRef.afterClose.subscribe(result => {
+      if (result?.success) {
+        this.loadCompanies();
+      }
+    });
   }
 
-  addCompany() { console.log('Nueva Empresa'); }
-  editCompany(data: Company) { console.log('Editando:', data.name); }
+  addCompany() { this.openModal(); }
+  editCompany(data: Company) { this.openModal(data); }
 }

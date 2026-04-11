@@ -52,7 +52,7 @@ export class LoginComponent {
 
       if (result.succeeded) {
         this.message.success('Acceso concedido');
-        this.router.navigate(['/welcome']);
+        this.router.navigate(['/main']);
       } else {
         this.message.error(result.message || 'Error al iniciar sesión');
       }

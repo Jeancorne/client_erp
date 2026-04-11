@@ -1,65 +1,65 @@
 <div>
   <app-breadcrumb [items]="breadcrumbItems"></app-breadcrumb>
-  <div class="contentBody mt-3">
+  
+  <div class="body-content mt-3">
     <nz-spin [nzSize]="'large'" [nzSpinning]="isLoading()" nzTip="Cargando...">
-      <div class="d-flex justify-content-between align-items-center mb-3">        
+      <div class="d-flex justify-content-between align-items-center mb-4">        
         <button nz-button nzType="primary" (click)="addCompany()" class="btn-flex">
           <span nz-icon nzType="plus"></span> Nueva Empresa
         </button>
       </div>
-      <div>
-        <nz-table 
-          #sortTable 
-          [nzData]="filteredCompanies()" 
-          [nzLoading]="isLoading()"
-          [nzFrontPagination]="true" 
-          [nzPageSize]="10"
-          [nzBordered]="true"
-          nzTableLayout="fixed"
-        >
-          <thead>
-            <tr>
-              <th nzCustomFilter nzShowSort [nzSortFn]="sortName" class="header-with-filter">
-                <span class="column-title">Razón Social</span>
-                <app-table-filter 
-                  [placeholder]="'Buscar por nombre'" 
-                  [searchValue]="searchValue()" 
-                  (searchChange)="searchValue.set($event)"
-                ></app-table-filter>
-              </th>
-              <th nzShowSort [nzSortFn]="sortNit">NIT / Identificación</th>
-              <th nzShowSort [nzSortFn]="sortCurrency">Moneda</th>
-              <th nzShowSort [nzSortFn]="sortType">Tipo</th>
-              <th nzShowSort [nzSortFn]="sortStatus">Estado</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (data of sortTable.data; track data.id) {
-            <tr>
-              <td>
-                <strong>{{ data.name }}</strong>
-                @if (data.isMaster) {
-                <nz-tag nzColor="gold" class="ms-2">Master</nz-tag>
-                }
-              </td>
-              <td>{{ data.nitTaxId }}</td>
-              <td>{{ data.currency }}</td>
-              <td>{{ data.personType }}</td>
-              <td>
-                <nz-badge [nzStatus]="data.isActive ? 'success' : 'error'"
-                  [nzText]="data.isActive ? 'Activo' : 'Inactivo'"></nz-badge>
-              </td>
-              <td>
-                <a (click)="editCompany(data)">Editar</a>
-                <nz-divider nzType="vertical"></nz-divider>
-                <a class="text-danger pointer">Eliminar</a>
-              </td>
-            </tr>
-            }
-          </tbody>
-        </nz-table>
-      </div>
+
+      <nz-table 
+        #sortTable 
+        [nzData]="filteredCompanies()" 
+        [nzLoading]="isLoading()"
+        [nzFrontPagination]="true" 
+        [nzPageSize]="10"
+        [nzBordered]="true"
+        nzTableLayout="fixed"
+      >
+        <thead>
+          <tr>
+            <th nzCustomFilter nzShowSort [nzSortFn]="sortName" class="header-with-filter">
+              <span class="column-title">Razón Social</span>
+              <app-table-filter 
+                [placeholder]="'Buscar por nombre'" 
+                [searchValue]="searchValue()" 
+                (searchChange)="searchValue.set($event)"
+              ></app-table-filter>
+            </th>
+            <th nzShowSort [nzSortFn]="sortNit">NIT / Identificación</th>
+            <!-- <th nzShowSort [nzSortFn]="sortCurrency">Moneda</th> -->
+            <th nzShowSort [nzSortFn]="sortType">Tipo</th>
+            <th nzShowSort [nzSortFn]="sortStatus">Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (data of sortTable.data; track data.id) {
+          <tr>
+            <td>
+              <strong>{{ data.name }}</strong>
+              @if (data.isMaster) {
+              <nz-tag nzColor="gold" class="ms-2">Master</nz-tag>
+              }
+            </td>
+            <td>{{ data.nitTaxId }}</td>
+            <!-- <td>{{ data.currency }}</td> -->
+            <td>{{ data.personType }}</td>
+            <td>
+              <nz-badge [nzStatus]="data.isActive ? 'success' : 'error'"
+                [nzText]="data.isActive ? 'Activo' : 'Inactivo'"></nz-badge>
+            </td>
+            <td>
+              <a (click)="editCompany(data)">Editar</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a class="text-danger pointer">Eliminar</a>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </nz-table>
     </nz-spin>
   </div>
 </div>

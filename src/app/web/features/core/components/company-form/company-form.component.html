@@ -1,0 +1,142 @@
+<form nz-form [formGroup]="validateForm" nzLayout="vertical">
+  <nz-tabs>
+    <!-- TAB 1: IDENTIDAD LEGAL -->
+    <nz-tab nzTitle="Identidad Legal">
+      <div class="row mt-3">
+        <div class="col-md-8">
+          <nz-form-item>
+            <nz-form-label nzRequired>Nombre Legal / Razón Social</nz-form-label>
+            <nz-form-control nzErrorTip="Campo requerido">
+              <input nz-input formControlName="name" placeholder="Ej: Acme Corporation S.A." />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-md-4">
+          <nz-form-item>
+            <nz-form-label>NIT / Identificación</nz-form-label>
+            <nz-form-control>
+              <input nz-input formControlName="nitTaxId" placeholder="900123456-7" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <nz-form-item>
+            <nz-form-label>Empresa Padre (Holding)</nz-form-label>
+            <nz-form-control>
+              <nz-select formControlName="coreCompanyIdParent" nzPlaceHolder="Seleccionar holding" nzAllowClear nzShowSearch>
+                @for (item of parentCompanies(); track item.id) {
+                  <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+                }
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-md-3 d-flex align-items-center mt-3">
+          <label nz-checkbox formControlName="isMaster">¿Es Empresa Matriz?</label>
+        </div>
+        <div class="col-md-3 d-flex align-items-center mt-3">
+          <label nz-checkbox formControlName="isActive">Activa</label>
+        </div>
+      </div>
+    </nz-tab>
+
+    <!-- TAB 2: DATOS DE CONTACTO -->
+    <nz-tab nzTitle="Datos de Contacto">
+      <div class="mt-3">
+        <nz-form-item>
+          <nz-form-label>Dirección Principal</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="address" placeholder="Calle 100 # 15-20" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <div class="row">
+          <div class="col-md-6">
+            <nz-form-item>
+              <nz-form-label>Teléfono</nz-form-label>
+              <nz-form-control>
+                <input nz-input formControlName="phone" placeholder="+57 300 1234567" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div class="col-md-6">
+            <nz-form-item>
+              <nz-form-label>Email Corporativo</nz-form-label>
+              <nz-form-control nzErrorTip="Email inválido">
+                <input nz-input formControlName="email" placeholder="contacto@empresa.com" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <nz-form-item>
+              <nz-form-label>Código CIIU (Actividad Económica)</nz-form-label>
+              <nz-form-control>
+                <input nz-input formControlName="dianCiiuCode" placeholder="Ej: 6201" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div class="col-md-6 d-flex align-items-center mt-3">
+            <label nz-checkbox formControlName="isBillingContact">Es Contacto de Facturación</label>
+          </div>
+        </div>
+      </div>
+    </nz-tab>
+
+    <!-- TAB 3: FISCAL Y MONEDA -->
+    <nz-tab nzTitle="Fiscal y Moneda">
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <nz-form-item>
+            <nz-form-label nzRequired>Moneda Contable</nz-form-label>
+            <nz-form-control nzErrorTip="Campo requerido">
+              <nz-select formControlName="coreCurrencyId" nzPlaceHolder="Seleccionar moneda" nzShowSearch>
+                @for (cur of currencies(); track cur.id) {
+                  <nz-option [nzLabel]="cur.code + ' - ' + cur.name" [nzValue]="cur.id"></nz-option>
+                }
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-md-6">
+          <nz-form-item>
+            <nz-form-label>Tipo de Persona</nz-form-label>
+            <nz-form-control>
+              <nz-select formControlName="personType">
+                <nz-option nzLabel="Jurídica" nzValue="LEGAL"></nz-option>
+                <nz-option nzLabel="Natural" nzValue="NATURAL"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <nz-form-item>
+        <nz-form-label>Responsabilidades Fiscales (DIAN)</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            formControlName="fiscalResponsibilityIds"
+            nzMode="multiple"
+            nzPlaceHolder="Seleccionar responsabilidades"
+          >
+            @for (item of fiscalResponsibilities(); track item.id) {
+              <nz-option [nzLabel]="item.code + ' - ' + item.name" [nzValue]="item.id"></nz-option>
+            }
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-tab>
+  </nz-tabs>
+
+  <div class="modal-footer-custom mt-4 d-flex justify-content-end gap-2">
+    <button nz-button nzType="default" (click)="handleCancel()" [disabled]="isSubmitting()">Cancelar</button>
+    <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isSubmitting()">
+      Guardar Empresa
+    </button>
+  </div>
+</form>

@@ -1,0 +1,114 @@
+.welcome-page {
+  padding: 24px;
+}
+
+.welcome-header {
+  margin-bottom: 32px;
+}
+
+.welcome-header h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #262626;
+  margin-bottom: 8px;
+}
+
+.welcome-header p {
+  font-size: 16px;
+  color: #8c8c8c;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.quick-card {
+  border-radius: 12px;
+  border: 1px solid #f0f0f0;
+}
+
+.card-icon {
+  font-size: 24px;
+  color: #1890ff;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.card-desc {
+  color: #595959;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ACCESOS RÁPIDOS */
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.action-card {
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.action-card:hover {
+  border-color: #1890ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.1);
+}
+
+.action-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.action-icon {
+  font-size: 20px;
+  color: #1890ff;
+  background: #e6f7ff;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.action-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.module-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #bfbfbf;
+  letter-spacing: 0.5px;
+}
+
+.page-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: #262626;
+}
+
+.arrow-icon {
+  font-size: 12px;
+  color: #bfbfbf;
+  transition: transform 0.3s;
+}
+
+.action-card:hover .arrow-icon {
+  transform: translateX(4px);
+  color: #1890ff;
+}

@@ -1,0 +1,32 @@
+<div class="welcome-page">
+  <div class="welcome-header">
+    <h1>¡Hola, {{ currentUser()?.firstName }}!</h1>
+    <p>Bienvenido al Panel de Gestión de ERP Umbrella.</p>
+  </div>
+
+  <div class="dashboard-grid">
+    <nz-card class="quick-card">
+      <span nz-icon nzType="dashboard" class="card-icon"></span>
+      <span class="card-title">Estado del Sistema</span>
+      <p class="card-desc">Todos los módulos están operativos. Utiliza la barra lateral izquierda para navegar entre las distintas áreas de la empresa.</p>
+    </nz-card>
+
+    <nz-card class="quick-card">
+      <span nz-icon nzType="star" class="card-icon" style="color: #fadb14"></span>
+      <span class="card-title">Accesos Preferentes</span>
+      <p class="card-desc">Tus pantallas favoritas están siempre disponibles en la estrella del menú lateral para un acceso ultra-rápido.</p>
+    </nz-card>
+
+    <nz-card class="quick-card">
+      <span nz-icon nzType="customer-service" class="card-icon"></span>
+      <span class="card-title">Soporte Técnico</span>
+      <p class="card-desc">Si necesitas ayuda con alguna funcionalidad, contacta con el administrador del sistema desde el menú de tu perfil.</p>
+    </nz-card>
+  </div>
+
+  <nz-divider></nz-divider>
+  
+  <div class="welcome-footer">
+    <p class="text-muted">ERP Umbrella ©2026 | Gestión Empresarial de Alto Nivel</p>
+  </div>
+</div>
