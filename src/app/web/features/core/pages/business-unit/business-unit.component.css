@@ -1,0 +1,27 @@
+/* Forzar visualización de bordes si hay conflictos con otros estilos */
+::ng-deep .ant-table-bordered>.ant-table-container {
+  border: 1px solid #f0f0f0 !important;
+}
+
+::ng-deep .ant-table-bordered .ant-table-thead>tr>th,
+::ng-deep .ant-table-bordered .ant-table-tbody>tr>td {
+  border-right: 1px solid #f0f0f0 !important;
+}
+
+/* Alineación de cabecera con filtro */
+.header-with-filter {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.column-title {
+  flex-grow: 1;
+}
+
+.text-danger {
+  color: #ff4d4f;
+}
+
+.pointer {
+  cursor: pointer;
+}

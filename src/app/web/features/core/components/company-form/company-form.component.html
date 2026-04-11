@@ -34,10 +34,9 @@
             </nz-form-control>
           </nz-form-item>
         </div>
-        <div class="col-md-3 d-flex align-items-center mt-3">
+        <div class="col-md-6 d-flex flex-wrap align-items-center mt-3 gap-3">
           <label nz-checkbox formControlName="isMaster">¿Es Empresa Matriz?</label>
-        </div>
-        <div class="col-md-3 d-flex align-items-center mt-3">
+          <label nz-checkbox formControlName="isBillingContact">¿Facturación Electrónica?</label>
           <label nz-checkbox formControlName="isActive">Activa</label>
         </div>
       </div>
@@ -80,9 +79,6 @@
                 <input nz-input formControlName="dianCiiuCode" placeholder="Ej: 6201" />
               </nz-form-control>
             </nz-form-item>
-          </div>
-          <div class="col-md-6 d-flex align-items-center mt-3">
-            <label nz-checkbox formControlName="isBillingContact">Es Contacto de Facturación</label>
           </div>
         </div>
       </div>

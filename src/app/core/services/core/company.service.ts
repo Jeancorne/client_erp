@@ -25,4 +25,9 @@ export class CompanyService {
     const response = await firstValueFrom(this.http.put<any>(`${this.apiUrl}/${id}`, company));
     return response;
   }
+
+  async delete(id: string): Promise<any> {
+    const response = await firstValueFrom(this.http.delete<any>(`${this.apiUrl}/${id}`));
+    return response;
+  }
 }

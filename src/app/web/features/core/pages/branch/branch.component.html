@@ -1,0 +1,48 @@
+<div>
+  <app-breadcrumb [items]="breadcrumbItems"></app-breadcrumb>
+
+  <div class="body-content mt-3">
+    <nz-spin [nzSize]="'large'" [nzSpinning]="isLoading()" nzTip="Cargando...">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <button nz-button nzType="primary" (click)="addBranch()" class="btn-flex">
+          <span nz-icon nzType="plus"></span> Registrar Sede
+        </button>
+      </div>
+
+      <nz-table #sortTable [nzData]="filteredBranches()" [nzLoading]="isLoading()" [nzFrontPagination]="true"
+        [nzPageSize]="10" [nzBordered]="true" nzTableLayout="fixed">
+        <thead>
+          <tr>
+            <th nzShowSort [nzSortFn]="sortCompany">Empresa Padre</th>
+            <th nzCustomFilter nzShowSort [nzSortFn]="sortName" class="header-with-filter">
+              <span class="column-title">Nombre Sede</span>
+              <app-table-filter [placeholder]="'Buscar por nombre'" [searchValue]="searchValue()"
+                (searchChange)="searchValue.set($event)"></app-table-filter>
+            </th>
+            <th nzShowSort [nzSortFn]="sortCity">Ciudad</th>
+            <th nzShowSort [nzSortFn]="sortStatus">Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (data of sortTable.data; track data.id) {
+          <tr>
+            <td>{{ data.companyName }}</td>
+            <td><strong>{{ data.name }}</strong></td>
+            <td>{{ data.cityName }}</td>
+            <td>
+              <nz-badge [nzStatus]="data.isActive ? 'success' : 'error'"
+                [nzText]="data.isActive ? 'Activo' : 'Inactivo'"></nz-badge>
+            </td>
+            <td>
+              <a (click)="editBranch(data)">Editar</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a class="text-danger pointer" (click)="deleteBranch(data)">Eliminar</a>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </nz-table>
+    </nz-spin>
+  </div>
+</div>

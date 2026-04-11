@@ -1,0 +1,211 @@
+<form nz-form [formGroup]="validateForm" nzLayout="vertical">
+  <nz-tabs>
+    <!-- TAB 1: IDENTIDAD DE ACCESO -->
+    <nz-tab nzTitle="Identidad de Acceso">
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <nz-form-item>
+            <nz-form-label nzRequired>Usuario</nz-form-label>
+            <nz-form-control nzErrorTip="Campo requerido">
+              <input nz-input formControlName="username" placeholder="Ej: admin1" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-md-6">
+          <nz-form-item>
+            <nz-form-label nzRequired>Email</nz-form-label>
+            <nz-form-control nzErrorTip="Email inválido">
+              <input nz-input formControlName="email" placeholder="admin1@gmail.com" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <nz-form-item>
+            <nz-form-label nzRequired>Nombres</nz-form-label>
+            <nz-form-control nzErrorTip="Campo requerido">
+              <input nz-input formControlName="firstName" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-md-6">
+          <nz-form-item>
+            <nz-form-label nzRequired>Apellidos</nz-form-label>
+            <nz-form-control nzErrorTip="Campo requerido">
+              <input nz-input formControlName="lastName" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <nz-form-item>
+            <nz-form-label>Tipo Identificación</nz-form-label>
+            <nz-form-control>
+              <nz-select formControlName="coreIdentificationTypeId" nzPlaceHolder="Seleccionar" nzAllowClear>
+                @for (item of identificationTypes(); track item.id) {
+                  <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+                }
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-md-6">
+          <nz-form-item>
+            <nz-form-label>No. Identificación</nz-form-label>
+            <nz-form-control>
+              <input nz-input formControlName="identificationNumber" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <nz-form-item>
+            <nz-form-label>Teléfono</nz-form-label>
+            <nz-form-control>
+              <input nz-input formControlName="phone" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-md-6 d-flex align-items-center mt-3 gap-3">
+          <label nz-checkbox formControlName="isMainAdmin">¿Admin Principal?</label>
+          <label nz-checkbox formControlName="isActive">Activo</label>
+        </div>
+      </div>
+
+      <div class="modal-footer-custom mt-4 d-flex justify-content-end gap-2">
+        <button nz-button nzType="default" (click)="handleCancel()">Cancelar</button>
+        <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isSubmitting()">
+          {{ isEditMode() ? 'Actualizar Usuario' : 'Registrar Usuario' }}
+        </button>
+      </div>
+    </nz-tab>
+
+    <!-- TABS SOLO EN EDICIÓN -->
+    @if (isEditMode()) {
+      
+      <!-- TAB 2: EMPRESAS AUTORIZADAS -->
+      <nz-tab nzTitle="Empresas Autorizadas">
+        <div class="p-3 border rounded mb-3 bg-light">
+          <h6>Vincular Nueva Empresa</h6>
+          <div class="d-flex gap-2 align-items-end">
+            <div class="flex-grow-1">
+              <nz-select [(ngModel)]="selectedCompanyForUser" [ngModelOptions]="{standalone: true}" nzPlaceHolder="Seleccionar empresa" class="w-100">
+                @for (item of allCompanies(); track item.id) {
+                  <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+                }
+              </nz-select>
+            </div>
+            <div>
+              <label nz-checkbox [(ngModel)]="isDefaultCompany" [ngModelOptions]="{standalone: true}">Default</label>
+            </div>
+            <button nz-button nzType="primary" (click)="addCompany()" [disabled]="!selectedCompanyForUser()">
+              <span nz-icon nzType="plus"></span>
+            </button>
+          </div>
+        </div>
+
+        <nz-table #companyTable [nzData]="userCompanies()" nzSize="small" [nzFrontPagination]="false">
+          <thead>
+            <tr>
+              <th>Empresa</th>
+              <th>Predeterminada</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of companyTable.data; track item.id) {
+              <tr>
+                <td>{{ item.companyName }}</td>
+                <td>
+                  <span *ngIf="item.isDefault" nz-icon nzType="check-circle" nzTheme="twotone" nzTwotoneColor="#52c41a"></span>
+                </td>
+                <td>
+                  <a class="text-danger" (click)="removeCompany(item)">Eliminar</a>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </nz-table>
+      </nz-tab>
+
+      <!-- TAB 3: ROLES ASIGNADOS -->
+      <nz-tab nzTitle="Roles Asignados">
+        <div class="matrix-container">
+          @for (comp of roleMatrix(); track comp.companyId) {
+            <div class="mb-4">
+              <h6 class="border-bottom pb-2">
+                {{ comp.companyName }} 
+                <small class="text-muted" *ngIf="comp.isDefault">(Predeterminada)</small>
+              </h6>
+              <div class="d-flex flex-wrap gap-3 p-2">
+                @for (role of comp.roles; track role.roleId) {
+                  <label nz-checkbox 
+                    [ngModel]="role.isAssigned" 
+                    (ngModelChange)="toggleRole($event, role)">
+                    {{ role.roleName }}
+                  </label>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </nz-tab>
+
+      <!-- TAB 4: SEDES AUTORIZADAS -->
+      <nz-tab nzTitle="Sedes Autorizadas">
+        <div class="p-3 border rounded mb-3 bg-light">
+          <h6>Autorizar Nueva Sede</h6>
+          <div class="row g-2">
+            <div class="col-md-5">
+              <nz-select [(ngModel)]="selectedCompanyForBranch" (ngModelChange)="onCompanyBranchChange($event)" [ngModelOptions]="{standalone: true}" nzPlaceHolder="Filtrar por Empresa" class="w-100">
+                @for (item of allCompanies(); track item.id) {
+                  <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+                }
+              </nz-select>
+            </div>
+            <div class="col-md-5">
+              <nz-select [(ngModel)]="selectedBranchToAdd" [ngModelOptions]="{standalone: true}" nzPlaceHolder="Seleccionar Sede" class="w-100" [nzDisabled]="!selectedCompanyForBranch()">
+                @for (item of availableBranches(); track item.id) {
+                  <nz-option [nzLabel]="item.branchName" [nzValue]="item.id"></nz-option>
+                }
+              </nz-select>
+            </div>
+            <div class="col-md-2">
+              <button nz-button nzType="primary" (click)="addBranch()" [disabled]="!selectedBranchToAdd()" class="w-100">
+                <span nz-icon nzType="plus"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <nz-table #branchTable [nzData]="userBranches()" nzSize="small" [nzFrontPagination]="false">
+          <thead>
+            <tr>
+              <th>Empresa</th>
+              <th>Sede</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of branchTable.data; track item.id) {
+              <tr>
+                <td>{{ item.companyName }}</td>
+                <td>{{ item.branchName }}</td>
+                <td>
+                  <a class="text-danger" (click)="removeBranch(item)">Eliminar</a>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </nz-table>
+      </nz-tab>
+
+    }
+  </nz-tabs>
+</form>

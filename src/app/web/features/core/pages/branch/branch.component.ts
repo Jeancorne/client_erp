@@ -14,12 +14,12 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { BreadcrumbComponent } from '../../../../shared/breadcrumb/breadcrumb.component';
 import { TableFilterComponent } from '../../../../shared/table-filter/table-filter.component';
-import { CompanyFormComponent } from '../../components/company-form/company-form.component';
-import { CompanyService } from '../../../../../core/services/core/company.service';
-import { Company } from '../../../../../core/models/company.models';
+import { BranchFormComponent } from '../../components/branch-form/branch-form.component';
+import { BranchService } from '../../../../../core/services/core/branch.service';
+import { Branch } from '../../../../../core/models/core/branch.models';
 
 @Component({
-  selector: 'app-company',
+  selector: 'app-branch',
   standalone: true,
   imports: [
     CommonModule,
@@ -36,92 +36,92 @@ import { Company } from '../../../../../core/models/company.models';
     TableFilterComponent,
     NzModalModule
   ],
-  templateUrl: './company.component.html',
-  styleUrl: './company.component.css'
+  templateUrl: './branch.component.html',
+  styleUrl: './branch.component.css'
 })
-export class CompanyComponent implements OnInit {
+export class BranchComponent implements OnInit {
   private modal = inject(NzModalService);
-  private companyService = inject(CompanyService);
+  private branchService = inject(BranchService);
   private message = inject(NzMessageService);
 
-  breadcrumbItems = [{ name: 'Estructura Organizativa' }, { name: 'Empresas' }];
+  breadcrumbItems = [{ name: 'Estructura Organizativa' }, { name: 'Sedes / Sucursales' }];
 
-  companies = signal<Company[]>([]);
+  branches = signal<Branch[]>([]);
   isLoading = signal<boolean>(false);
   searchValue = signal<string>('');
 
-  // Filtrado reactivo computado
-  filteredCompanies = computed(() => {
+  filteredBranches = computed(() => {
     const term = this.searchValue().toLowerCase();
-    const list = this.companies();
+    const list = this.branches();
     if (!term) return list;
-    return list.filter(item => item.name.toLowerCase().includes(term));
+    return list.filter(item =>
+      item.name.toLowerCase().includes(term) ||
+      item.companyName?.toLowerCase().includes(term) ||
+      item.cityName?.toLowerCase().includes(term)
+    );
   });
 
-  // Funciones de ordenamiento
-  sortName = (a: Company, b: Company) => a.name.localeCompare(b.name);
-  sortNit = (a: Company, b: Company) => (a.nitTaxId || '').localeCompare(b.nitTaxId || '');
-  sortCurrency = (a: Company, b: Company) => (a.coreCurrencyId || '').localeCompare(b.coreCurrencyId || '');
-  sortType = (a: Company, b: Company) => (a.personType || '').localeCompare(b.personType || '');
-  sortStatus = (a: Company, b: Company) => (a.isActive === b.isActive ? 0 : a.isActive ? -1 : 1);
+  sortName = (a: Branch, b: Branch) => a.name.localeCompare(b.name);
+  sortCompany = (a: Branch, b: Branch) => (a.companyName || '').localeCompare(b.companyName || '');
+  sortCity = (a: Branch, b: Branch) => (a.cityName || '').localeCompare(b.cityName || '');
+  sortStatus = (a: Branch, b: Branch) => (a.isActive === b.isActive ? 0 : a.isActive ? -1 : 1);
 
   ngOnInit() {
-    this.loadCompanies();
+    this.loadBranches();
   }
 
-  async loadCompanies() {
+  async loadBranches() {
     this.isLoading.set(true);
     try {
-      const data = await this.companyService.getAll();
-      this.companies.set(data);
+      const data = await this.branchService.getAll();
+      this.branches.set(data);
     } catch (error) {
-      this.message.error('Error al cargar la lista de empresas');
+      this.message.error('Error al cargar la lista de sedes');
       console.error(error);
     } finally {
       this.isLoading.set(false);
     }
   }
 
-  openModal(data?: Company) {
-    const title = data ? 'Editar Empresa' : 'Registrar Nueva Empresa';
-    
+  openModal(data?: Branch) {
+    const title = data ? 'Editar Sede' : 'Registrar Nueva Sede';
+
     const modalRef = this.modal.create({
       nzTitle: title,
-      nzContent: CompanyFormComponent,
+      nzContent: BranchFormComponent,
       nzWidth: 800,
       nzMaskClosable: false,
       nzFooter: null,
       nzData: {
-        companyData: data,
-        companies: this.companies()
+        branchData: data
       }
     });
 
     modalRef.afterClose.subscribe(result => {
       if (result?.success) {
-        this.loadCompanies();
+        this.loadBranches();
       }
     });
   }
 
-  addCompany() { this.openModal(); }
-  editCompany(data: Company) { this.openModal(data); }
+  addBranch() { this.openModal(); }
+  editBranch(data: Branch) { this.openModal(data); }
 
-  deleteCompany(data: Company) {
+  deleteBranch(data: Branch) {
     this.modal.confirm({
-      nzTitle: '¿Estás seguro de eliminar esta empresa?',
-      nzContent: `<b style="color: red;">${data.name}</b> será eliminada permanentemente.`,
+      nzTitle: '¿Estás seguro de eliminar esta sede?',
+      nzContent: `<b style="color: red;">${data.name}</b> de la empresa <b>${data.companyName}</b> será eliminada.`,
       nzOkText: 'Eliminar',
       nzOkType: 'primary',
       nzOkDanger: true,
       nzOnOk: async () => {
         try {
-          const response = await this.companyService.delete(data.id!);
+          const response = await this.branchService.delete(data.id!);
           if (response.succeeded) {
-            this.message.success('Empresa eliminada correctamente');
-            this.loadCompanies();
+            this.message.success('Sede eliminada correctamente');
+            this.loadBranches();
           } else {
-            this.message.error(response.message || 'Error al eliminar la empresa');
+            this.message.error(response.message || 'Error al eliminar la sede');
           }
         } catch (error) {
           this.message.error('Ocurrió un error inesperado al eliminar');

@@ -19,7 +19,8 @@ export interface UserInfo {
   email: string;
   firstName: string;
   lastName: string;
-  companyId: string;
+  companyIds: string[];
+  defaultCompanyId: string | null;
   isMainAdmin: boolean;
 }
 

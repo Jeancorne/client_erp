@@ -1,0 +1,48 @@
+<div>
+  <app-breadcrumb [items]="breadcrumbItems"></app-breadcrumb>
+
+  <div class="body-content mt-3">
+    <nz-spin [nzSize]="'large'" [nzSpinning]="isLoading()" nzTip="Cargando...">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <button nz-button nzType="primary" (click)="addUnit()" class="btn-flex">
+          <span nz-icon nzType="plus"></span> Nueva Unidad
+        </button>
+      </div>
+
+      <nz-table #sortTable [nzData]="filteredUnits()" [nzLoading]="isLoading()" [nzFrontPagination]="true"
+        [nzPageSize]="10" [nzBordered]="true" nzTableLayout="fixed">
+        <thead>
+          <tr>
+            <th nzShowSort [nzSortFn]="sortCompany">Empresa</th>
+            <th nzCustomFilter nzShowSort [nzSortFn]="sortName" class="header-with-filter">
+              <span class="column-title">Unidad</span>
+              <app-table-filter [placeholder]="'Buscar por unidad'" [searchValue]="searchValue()"
+                (searchChange)="searchValue.set($event)"></app-table-filter>
+            </th>
+            <th nzShowSort [nzSortFn]="sortManager">Gerente / Responsable</th>
+            <th nzShowSort [nzSortFn]="sortStatus">Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (data of sortTable.data; track data.id) {
+          <tr>
+            <td>{{ data.companyName }}</td>
+            <td><strong>{{ data.name }}</strong></td>
+            <td>{{ data.managerFullName }}</td>
+            <td>
+              <nz-badge [nzStatus]="data.isActive ? 'success' : 'error'"
+                [nzText]="data.isActive ? 'Activo' : 'Inactivo'"></nz-badge>
+            </td>
+            <td>
+              <a (click)="editUnit(data)">Editar</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a class="text-danger pointer" (click)="deleteUnit(data)">Eliminar</a>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </nz-table>
+    </nz-spin>
+  </div>
+</div>
