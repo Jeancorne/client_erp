@@ -1,5 +1,5 @@
 import { Injectable, signal, computed } from '@angular/core';
-import { MenuItem } from '../models/auth.models';
+import { MenuItem } from '../models/auth/menu-item.model';
 
 @Injectable({
   providedIn: 'root'

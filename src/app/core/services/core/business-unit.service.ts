@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { BusinessUnit } from '../../models/core/business-unit.models';
+import { BusinessUnit } from '../../models/core/business-unit/business-unit.model';
 
 @Injectable({
   providedIn: 'root'

@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { FiscalResponsibility } from '../../models/company.models';
+import { FiscalResponsibility } from '../../models/core/fiscal-responsibility/fiscal-responsibility.model';
 
 @Injectable({
   providedIn: 'root'

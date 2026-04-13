@@ -1,0 +1,17 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="handleOk()" nzLayout="vertical">
+  <nz-form-item>
+    <nz-form-label [nzRequired]="true">Empresas Destino</nz-form-label>
+    <nz-form-control nzErrorTip="Seleccione al menos una empresa destino">
+      <nz-select formControlName="targetCompanyIds" nzMode="multiple" nzPlaceHolder="Seleccionar empresas" class="w-100">
+        @for (company of availableCompanies(); track company.id) {
+          <nz-option [nzLabel]="company.name" [nzValue]="company.id"></nz-option>
+        }
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <div class="ant-modal-footer" style="margin: 0 -24px -24px -24px; padding: 10px 16px; border-top: 1px solid #f0f0f0;">
+    <button nz-button nzType="default" (click)="handleCancel()" type="button" [disabled]="isSubmitting()">Cancelar</button>
+    <button nz-button nzType="primary" [nzLoading]="isSubmitting()" type="submit">Duplicar Ahora</button>
+  </div>
+</form>

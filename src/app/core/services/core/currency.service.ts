@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { Currency } from '../../models/company.models';
+import { Currency } from '../../models/core/currency/currency.model';
 
 @Injectable({
   providedIn: 'root'

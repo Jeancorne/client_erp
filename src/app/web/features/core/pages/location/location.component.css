@@ -1,0 +1,50 @@
+.body-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.fw-bold {
+  font-weight: 700;
+}
+
+.btn-flex {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.text-primary {
+  color: #1890ff;
+}
+
+.text-success {
+  color: #52c41a;
+}
+
+.text-danger {
+  color: #ff4d4f;
+}
+
+.text-muted {
+  color: #8c8c8c;
+}
+
+.me-2 {
+  margin-right: 0.5rem;
+}
+
+.bg-light {
+  background-color: #fafafa !important;
+}
+
+.header-with-filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

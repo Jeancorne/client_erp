@@ -1,0 +1,73 @@
+<div>
+  <app-breadcrumb [items]="breadcrumbItems"></app-breadcrumb>
+
+  <div class="body-content mt-3">
+    <nz-spin [nzSize]="'large'" [nzSpinning]="isLoading()" nzTip="Cargando...">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex align-items-center gap-3">
+          <button nz-button nzType="default" (click)="importCsv()">
+            <i nz-icon nzType="upload"></i> Importar CSV
+          </button>
+        </div>
+        
+        <div class="d-flex gap-2">
+          <button nz-button nzType="primary" (click)="openPartnerModal()" class="btn-flex">
+            <i nz-icon nzType="plus"></i> Registrar Tercero
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-white rounded shadow-sm overflow-hidden">
+        <nz-table 
+          #sortTable 
+          [nzData]="filteredPartners()" 
+          [nzLoading]="isLoading()" 
+          nzSize="middle" 
+          [nzBordered]="true"
+          [nzFrontPagination]="true"
+          [nzPageSize]="10"
+          nzTableLayout="fixed"
+        >
+          <thead>
+            <tr>
+              <th nzCustomFilter nzShowSort [nzSortFn]="sortName" class="header-with-filter">
+                <span class="column-title">Nombre / Razón Social</span>
+                <app-table-filter 
+                  [placeholder]="'Buscar por nombre o NIT'" 
+                  [searchValue]="searchValue()" 
+                  (searchChange)="searchValue.set($event)"
+                ></app-table-filter>
+              </th>
+              <th nzShowSort [nzSortFn]="sortCompanyName">Empresa</th>
+              <th nzShowSort [nzSortFn]="sortNit">NIT / TAX ID</th>
+              <th nzShowSort [nzSortFn]="sortType">Tipo Tercero</th>
+              <th class="text-center" nzShowSort [nzSortFn]="sortStatus">Estado</th>
+              <th class="text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (data of sortTable.data; track data.id) {
+            <tr>
+              <td><span class="fw-semibold">{{ data.partnerFullName }}</span></td>
+              <td>{{ data.companyName }}</td>
+              <td>{{ data.nitTaxId }}</td>
+              <td>
+                <nz-tag [nzColor]="'blue'">{{ data.partnerType }}</nz-tag>
+              </td>
+              <td class="text-center">
+                <nz-badge [nzStatus]="data.isActive ? 'success' : 'error'"
+                  [nzText]="data.isActive ? 'Activo' : 'Inactivo'"></nz-badge>
+              </td>
+              <td class="text-center">
+                <a class="text-primary pointer" (click)="openPartnerModal(data)">Editar</a>
+                <nz-divider nzType="vertical"></nz-divider>
+                <a class="text-danger pointer" (click)="deletePartner(data)">Eliminar</a>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </nz-table>
+      </div>
+    </nz-spin>
+  </div>
+</div>

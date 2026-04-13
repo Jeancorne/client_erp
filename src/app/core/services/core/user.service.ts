@@ -2,7 +2,10 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { User, UserRoleMatrix, UserCompany, UserBranch } from '../../models/core/user.models';
+import { User } from '../../models/core/user/user.model';
+import { UserRoleMatrix } from '../../models/core/user/user-role-matrix.model';
+import { UserCompany } from '../../models/core/user/user-company.model';
+import { UserBranch } from '../../models/core/user/user-branch.model';
 
 @Injectable({
   providedIn: 'root'

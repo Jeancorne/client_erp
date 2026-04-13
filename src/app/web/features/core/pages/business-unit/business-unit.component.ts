@@ -16,7 +16,7 @@ import { BreadcrumbComponent } from '../../../../shared/breadcrumb/breadcrumb.co
 import { TableFilterComponent } from '../../../../shared/table-filter/table-filter.component';
 import { BusinessUnitFormComponent } from '../../components/business-unit-form/business-unit-form.component';
 import { BusinessUnitService } from '../../../../../core/services/core/business-unit.service';
-import { BusinessUnit } from '../../../../../core/models/core/business-unit.models';
+import { BusinessUnit } from '../../../../../core/models/core/business-unit/business-unit.model';
 
 @Component({
   selector: 'app-business-unit',
@@ -44,7 +44,7 @@ export class BusinessUnitComponent implements OnInit {
   private businessUnitService = inject(BusinessUnitService);
   private message = inject(NzMessageService);
 
-  breadcrumbItems = [{ name: 'Core System' }, { name: 'Unidades de Negocio' }];
+  breadcrumbItems = [{ name: 'Estructura Organizativa' }, { name: 'Unidades de Negocio' }];
 
   units = signal<BusinessUnit[]>([]);
   isLoading = signal<boolean>(false);

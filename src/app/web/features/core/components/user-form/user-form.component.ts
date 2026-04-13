@@ -18,7 +18,10 @@ import { UserService } from '../../../../../core/services/core/user.service';
 import { CompanyService } from '../../../../../core/services/core/company.service';
 import { BranchService } from '../../../../../core/services/core/branch.service';
 import { IdentificationTypeService } from '../../../../../core/services/core/identification-type.service';
-import { User, UserCompany, UserRoleMatrix, UserBranch } from '../../../../../core/models/core/user.models';
+import { User } from '../../../../../core/models/core/user/user.model';
+import { UserCompany } from '../../../../../core/models/core/user/user-company.model';
+import { UserRoleMatrix } from '../../../../../core/models/core/user/user-role-matrix.model';
+import { UserBranch } from '../../../../../core/models/core/user/user-branch.model';
 
 @Component({
   selector: 'app-user-form',
@@ -257,29 +260,36 @@ export class UserFormComponent implements OnInit {
 
   async toggleRole(assigned: boolean, role: any) {
     try {
+      console.log(assigned, "assigned")
       if (assigned) {
         const result = await this.userService.assignRole({
           coreUserId: this.userId()!,
           coreRoleId: role.roleId
         });
+        console.log('Assign Role Result:', result);
         if (result.succeeded) {
-          this.message.success('Rol asignado');
+          this.message.success('Rol asignado correctamente');
         } else {
           this.message.error(result.message || 'Error al asignar rol');
         }
       } else {
-        if (role.userRoleId) {
-          const result = await this.userService.removeRole(role.userRoleId);
+        // Obtenemos el ID de la vinculación (userRoleId)
+        const idToRemove = role.userRoleId || role.id;
+        if (idToRemove) {
+          const result = await this.userService.removeRole(idToRemove);
           if (result.succeeded) {
-            this.message.success('Rol removido');
+            this.message.success('Rol removido correctamente');
           } else {
             this.message.error(result.message || 'Error al remover rol');
           }
+        } else {
+          this.message.warning('No se pudo identificar el ID de la vinculación del rol');
         }
       }
-      await this.loadRoleMatrix();
     } catch (error: any) {
-      this.message.error(error.error?.message || 'Error al actualizar rol');
+      this.message.error(error.error?.message || 'Error al actualizar el rol');
+    } finally {
+      // Siempre recargamos la matriz para asegurar sincronía con el servidor
       await this.loadRoleMatrix();
     }
   }

@@ -1,7 +1,11 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
-import { LoginRequest, AuthResponse, UserInfo, MenuItem, AuthData } from '../models/auth.models';
+import { LoginRequest } from '../models/auth/login.request';
+import { AuthResponse } from '../models/auth/auth-response.model';
+import { UserInfo } from '../models/auth/user-info.model';
+import { MenuItem } from '../models/auth/menu-item.model';
+import { AuthData } from '../models/auth/auth-data.model';
 import { environment } from '../../../environments/environment';
 
 @Injectable({

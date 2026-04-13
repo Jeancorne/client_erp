@@ -1,0 +1,78 @@
+.pointer {
+  cursor: pointer;
+}
+
+.me-2 {
+  margin-right: 0.5rem;
+}
+
+.text-primary {
+  color: #1890ff;
+}
+
+.body-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.bg-white {
+  background-color: #fff;
+}
+
+.bg-light {
+  background-color: #fafafa !important;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.fw-bold {
+  font-weight: 700;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.ms-2 {
+  margin-left: 0.5rem;
+}
+
+.ms-1 {
+  margin-left: 0.25rem;
+}
+
+.gap-3 {
+  gap: 1rem;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.shadow-sm {
+  box-shadow: 0 .125rem .25rem rgba(0,0,0,.075) !important;
+}
+
+.rounded {
+  border-radius: .375rem !important;
+}
+
+.btn-flex {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Ajustes para la tabla de matriz */
+:host ::ng-deep .ant-table-thead > tr > th {
+  background-color: #f0f2f5;
+  font-weight: bold;
+}
+
+:host ::ng-deep .ant-table-tbody > tr.bg-light > td {
+  background-color: #f8f9fa !important;
+}

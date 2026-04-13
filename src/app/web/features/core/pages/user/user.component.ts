@@ -15,7 +15,7 @@ import { BreadcrumbComponent } from '../../../../shared/breadcrumb/breadcrumb.co
 import { TableFilterComponent } from '../../../../shared/table-filter/table-filter.component';
 import { UserFormComponent } from '../../components/user-form/user-form.component';
 import { UserService } from '../../../../../core/services/core/user.service';
-import { User } from '../../../../../core/models/core/user.models';
+import { User } from '../../../../../core/models/core/user/user.model';
 
 @Component({
   selector: 'app-user',
@@ -42,7 +42,7 @@ export class UserComponent implements OnInit {
   private userService = inject(UserService);
   private message = inject(NzMessageService);
 
-  breadcrumbItems = [{ name: 'Core System' }, { name: 'Usuarios y Acceso' }];
+  breadcrumbItems = [{ name: 'Seguridad y Maestros' }, { name: 'Usuarios y Acceso' }];
 
   users = signal<User[]>([]);
   isLoading = signal<boolean>(false);

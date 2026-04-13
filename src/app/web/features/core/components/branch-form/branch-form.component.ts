@@ -14,9 +14,11 @@ import { CompanyService } from '../../../../../core/services/core/company.servic
 import { CountryService } from '../../../../../core/services/core/country.service';
 import { StateService } from '../../../../../core/services/core/state.service';
 import { CityService } from '../../../../../core/services/core/city.service';
-import { Branch } from '../../../../../core/models/core/branch.models';
-import { Company } from '../../../../../core/models/company.models';
-import { Country, State, City } from '../../../../../core/models/core/location.models';
+import { Branch } from '../../../../../core/models/core/branch/branch.model';
+import { Company } from '../../../../../core/models/company/company.model';
+import { Country } from '../../../../../core/models/core/country/country.model';
+import { State } from '../../../../../core/models/core/state/state.model';
+import { City } from '../../../../../core/models/core/city/city.model';
 
 @Component({
   selector: 'app-branch-form',

@@ -12,8 +12,8 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { BusinessUnitService } from '../../../../../core/services/core/business-unit.service';
 import { CompanyService } from '../../../../../core/services/core/company.service';
 import { UserCompanyService } from '../../../../../core/services/core/user-company.service';
-import { BusinessUnit } from '../../../../../core/models/core/business-unit.models';
-import { Company } from '../../../../../core/models/company.models';
+import { BusinessUnit } from '../../../../../core/models/core/business-unit/business-unit.model';
+import { Company } from '../../../../../core/models/company/company.model';
 
 @Component({
   selector: 'app-business-unit-form',

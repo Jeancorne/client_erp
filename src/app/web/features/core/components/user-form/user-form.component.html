@@ -147,6 +147,7 @@
                 @for (role of comp.roles; track role.roleId) {
                   <label nz-checkbox 
                     [ngModel]="role.isAssigned" 
+                    [ngModelOptions]="{standalone: true}"
                     (ngModelChange)="toggleRole($event, role)">
                     {{ role.roleName }}
                   </label>

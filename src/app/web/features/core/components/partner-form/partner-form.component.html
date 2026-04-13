@@ -1,0 +1,221 @@
+<form nz-form [formGroup]="validateForm" nzLayout="vertical">
+  <nz-tabs>
+    <!-- TAB 1: DATOS BÁSICOS -->
+    <nz-tab nzTitle="Datos Básicos">
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <nz-form-item>
+            <nz-form-label [nzRequired]="true">Empresa Vinculada</nz-form-label>
+            <nz-form-control nzErrorTip="Seleccione la empresa para este tercero">
+              <nz-select formControlName="coreCompanyId" nzShowSearch nzPlaceHolder="Seleccionar empresa destino">
+                @for (item of companies(); track item.id) {
+                  <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+                }
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-md-4">
+          <nz-form-item>
+            <nz-form-label [nzRequired]="true">Nombre Completo / Razón Social</nz-form-label>
+            <nz-form-control nzErrorTip="Ingrese el nombre completo">
+              <input nz-input formControlName="partnerFullName" placeholder="Ej: Juan Pérez" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-md-2">
+          <nz-form-item>
+            <nz-form-label>Estado</nz-form-label>
+            <nz-form-control>
+              <nz-switch formControlName="isActive" nzCheckedChildren="Activo" nzUnCheckedChildren="Inactivo"></nz-switch>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <nz-form-item>
+            <nz-form-label [nzRequired]="true">Tipo Identificación</nz-form-label>
+            <nz-form-control nzErrorTip="Seleccione tipo de ID">
+              <nz-select formControlName="coreIdentificationTypeId" nzPlaceHolder="Seleccionar">
+                @for (item of identificationTypes(); track item.id) {
+                  <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+                }
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-md-4">
+          <nz-form-item>
+            <nz-form-label [nzRequired]="true">NIT / Identificación</nz-form-label>
+            <nz-form-control nzErrorTip="Ingrese el número de ID">
+              <input nz-input formControlName="nitTaxId" placeholder="Ej: 123456789-0" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-md-4">
+          <nz-form-item>
+            <nz-form-label>Tipo Persona</nz-form-label>
+            <nz-form-control>
+              <nz-select formControlName="personType">
+                @for (item of personTypes; track item.value) {
+                  <nz-option [nzLabel]="item.label" [nzValue]="item.value"></nz-option>
+                }
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <nz-form-item>
+            <nz-form-label>Tercero Padre / Holding</nz-form-label>
+            <nz-form-control>
+              <nz-select formControlName="parentPartnerId" nzShowSearch nzAllowClear nzPlaceHolder="Buscar empresa padre">
+                @for (item of parentPartners(); track item.id) {
+                  <nz-option [nzLabel]="item.partnerFullName" [nzValue]="item.id"></nz-option>
+                }
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-md-3">
+          <nz-form-item>
+            <nz-form-label>Tipo Tercero</nz-form-label>
+            <nz-form-control>
+              <nz-select formControlName="partnerType">
+                @for (item of partnerTypes; track item.label) {
+                  <nz-option [nzLabel]="item.label" [nzValue]="item.value"></nz-option>
+                }
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-md-3">
+          <nz-form-item>
+            <nz-form-label>Código CIIU</nz-form-label>
+            <nz-form-control>
+              <input nz-input formControlName="dianCiiuCode" placeholder="Ej: 4610" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <nz-form-item>
+            <nz-form-label>Responsabilidades Fiscales</nz-form-label>
+            <nz-form-control>
+              <nz-select formControlName="fiscalResponsibilities" nzMode="multiple" nzPlaceHolder="Seleccionar responsabilidades">
+                @for (item of fiscalResponsibilities(); track item.id) {
+                  <nz-option [nzLabel]="'['+item.code+'] '+item.name" [nzValue]="item.id"></nz-option>
+                }
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-md-3">
+          <nz-form-item>
+            <nz-form-label>Moneda por Defecto</nz-form-label>
+            <nz-form-control>
+              <nz-select formControlName="defaultCurrencyId" nzPlaceHolder="Seleccionar">
+                @for (item of currencies(); track item.id) {
+                  <nz-option [nzLabel]="item.code" [nzValue]="item.id"></nz-option>
+                }
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-md-3">
+          <nz-form-item>
+            <nz-form-label>Límite de Crédito</nz-form-label>
+            <nz-form-control>
+              <nz-input-number formControlName="creditLimit" [nzMin]="0" class="w-100" [nzFormatter]="formatterDollar" [nzParser]="parserDollar"></nz-input-number>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </nz-tab>
+
+    <!-- TAB 2: DIRECCIONES -->
+    @if (partnerId()) {
+      <nz-tab nzTitle="Direcciones">
+        <div class="d-flex justify-content-end mb-3 mt-3">
+          <button nz-button nzType="primary" (click)="openAddressModal()">
+            <i nz-icon nzType="plus"></i> Nueva Dirección
+          </button>
+        </div>
+        <nz-table #addrTable [nzData]="addresses()" nzSize="small" [nzBordered]="true">
+          <thead>
+            <tr>
+              <th>Nombre Etiqueta</th>
+              <th>Ciudad</th>
+              <th>Tipo</th>
+              <th class="text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of addrTable.data; track item.id) {
+              <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.cityName || 'N/A' }}</td>
+                <td>{{ item.addressType }}</td>
+                <td class="text-center">
+                  <a class="text-primary pointer" (click)="openAddressModal(item)">Ver</a>
+                  <nz-divider nzType="vertical"></nz-divider>
+                  <a class="text-danger pointer" (click)="deleteAddress(item)">Eliminar</a>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </nz-table>
+      </nz-tab>
+    }
+
+    <!-- TAB 3: CONTACTOS -->
+    @if (partnerId()) {
+      <nz-tab nzTitle="Contactos">
+        <div class="d-flex justify-content-end mb-3 mt-3">
+          <button nz-button nzType="primary" (click)="openContactModal()">
+            <i nz-icon nzType="plus"></i> Nuevo Contacto
+          </button>
+        </div>
+        <nz-table #contTable [nzData]="contacts()" nzSize="small" [nzBordered]="true">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th class="text-center">Facturación Electrónica?</th>
+              <th class="text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of contTable.data; track item.id) {
+              <tr>
+                <td>{{ item.firstName }} {{ item.lastName }}</td>
+                <td>{{ item.email }}</td>
+                <td class="text-center">
+                  @if (item.isBillingContact) {
+                    <i nz-icon nzType="check-circle" class="text-success" style="font-size: 18px;"></i>
+                  }
+                </td>
+                <td class="text-center">
+                  <a class="text-primary pointer" (click)="openContactModal(item)">Ver</a>
+                  <nz-divider nzType="vertical"></nz-divider>
+                  <a class="text-danger pointer" (click)="deleteContact(item)">Eliminar</a>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </nz-table>
+      </nz-tab>
+    }
+  </nz-tabs>
+
+  <div class="ant-modal-footer" style="margin: 0 -24px -24px -24px; padding: 10px 16px; border-top: 1px solid #f0f0f0;">
+    <button nz-button nzType="default" (click)="handleCancel()" type="button" [disabled]="isSubmitting()">Cerrar</button>
+    <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isSubmitting()">Guardar Cambios</button>
+  </div>
+</form>

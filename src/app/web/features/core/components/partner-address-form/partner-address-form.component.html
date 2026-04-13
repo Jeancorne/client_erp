@@ -1,0 +1,94 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="handleOk()" nzLayout="vertical">
+  <nz-form-item>
+    <nz-form-label [nzRequired]="true">Nombre Etiqueta</nz-form-label>
+    <nz-form-control nzErrorTip="Ingrese un nombre (ej: Oficina Central)">
+      <input nz-input formControlName="name" placeholder="Ej: Principal, Casa, Bodega" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <div class="row">
+    <div class="col-md-8">
+      <nz-form-item>
+        <nz-form-label [nzRequired]="true">Dirección Línea 1</nz-form-label>
+        <nz-form-control nzErrorTip="Ingrese la dirección">
+          <input nz-input formControlName="addressLine1" placeholder="Calle, Carrera, Av..." />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div class="col-md-4">
+      <nz-form-item>
+        <nz-form-label>Tipo</nz-form-label>
+        <nz-form-control>
+          <nz-select formControlName="addressType">
+            @for (item of addressTypes; track item.value) {
+              <nz-option [nzLabel]="item.label" [nzValue]="item.value"></nz-option>
+            }
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <nz-form-item>
+        <nz-form-label [nzRequired]="true">País</nz-form-label>
+        <nz-form-control nzErrorTip="Seleccione un país">
+          <nz-select formControlName="coreCountryId" nzShowSearch nzPlaceHolder="Seleccionar país" (ngModelChange)="onCountryChange($event)">
+            @for (item of countries(); track item.id) {
+              <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+            }
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div class="col-md-4">
+      <nz-form-item>
+        <nz-form-label [nzRequired]="true">Departamento / Estado</nz-form-label>
+        <nz-form-control nzErrorTip="Seleccione un departamento">
+          <nz-select formControlName="coreStateId" nzShowSearch nzPlaceHolder="Seleccionar" (ngModelChange)="onStateChange($event)" [disabled]="states().length === 0">
+            @for (item of states(); track item.id) {
+              <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+            }
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div class="col-md-4">
+      <nz-form-item>
+        <nz-form-label [nzRequired]="true">Ciudad</nz-form-label>
+        <nz-form-control nzErrorTip="Seleccione una ciudad">
+          <nz-select formControlName="coreCityId" nzShowSearch nzPlaceHolder="Seleccionar" [disabled]="cities().length === 0">
+            @for (item of cities(); track item.id) {
+              <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+            }
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <nz-form-item>
+        <nz-form-label>Código Postal</nz-form-label>
+        <nz-form-control>
+          <input nz-input formControlName="zipCode" placeholder="CP" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div class="col-md-6">
+      <nz-form-item>
+        <nz-form-label>Activo</nz-form-label>
+        <nz-form-control>
+          <nz-switch formControlName="isActive"></nz-switch>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+
+  <div class="ant-modal-footer" style="margin: 0 -24px -24px -24px; padding: 10px 16px; border-top: 1px solid #f0f0f0;">
+    <button nz-button nzType="default" (click)="handleCancel()" type="button" [disabled]="isSubmitting()">Cancelar</button>
+    <button nz-button nzType="primary" [nzLoading]="isSubmitting()" type="submit">Guardar Dirección</button>
+  </div>
+</form>

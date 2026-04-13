@@ -12,6 +12,6 @@ export class IdentificationTypeService {
 
   async getAll(): Promise<any[]> {
     const response = await firstValueFrom(this.http.get<any>(this.apiUrl));
-    return response.succeeded ? response.data : [];
+    return response.succeeded ? response.data : response; // Handle cases where data might be the top level array
   }
 }

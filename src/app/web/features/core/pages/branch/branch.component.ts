@@ -16,7 +16,7 @@ import { BreadcrumbComponent } from '../../../../shared/breadcrumb/breadcrumb.co
 import { TableFilterComponent } from '../../../../shared/table-filter/table-filter.component';
 import { BranchFormComponent } from '../../components/branch-form/branch-form.component';
 import { BranchService } from '../../../../../core/services/core/branch.service';
-import { Branch } from '../../../../../core/models/core/branch.models';
+import { Branch } from '../../../../../core/models/core/branch/branch.model';
 
 @Component({
   selector: 'app-branch',

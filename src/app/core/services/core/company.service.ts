@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { Company } from '../../models/company.models';
+import { Company } from '../../models/company/company.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,11 @@ export class CompanyService {
 
   async getAll(): Promise<Company[]> {
     const response = await firstValueFrom(this.http.get<any>(this.apiUrl));
+    return response.succeeded ? response.data : [];
+  }
+
+  async getLookup(): Promise<any[]> {
+    const response = await firstValueFrom(this.http.get<any>(`${this.apiUrl}/lookup`));
     return response.succeeded ? response.data : [];
   }
 

@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
 
 import { AuthService } from '../../../core/services/auth.service';
 import { NavigationService } from '../../../core/services/navigation.service';
-import { MenuItem } from '../../../core/models/auth.models';
+import { MenuItem } from '../../../core/models/auth/menu-item.model';
 
 @Component({
   selector: 'app-main-layout',

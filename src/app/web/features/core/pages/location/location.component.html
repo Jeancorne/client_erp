@@ -1,0 +1,122 @@
+<div>
+  <app-breadcrumb [items]="breadcrumbItems"></app-breadcrumb>
+
+  <div class="body-content mt-3">
+    <nz-spin [nzSize]="'large'" [nzSpinning]="isLoading()" nzTip="Cargando...">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex align-items-center gap-3">
+          <nz-select [ngModel]="selectedCountryId()" (ngModelChange)="selectedCountryId.set($event)" nzShowSearch nzAllowClear nzPlaceHolder="Seleccionar país" style="width: 300px;">
+            @for (item of countries(); track item.id) {
+              <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+            }
+          </nz-select>
+          <button nz-button nzType="primary" (click)="filter()">
+            <i nz-icon nzType="filter"></i> Filtrar
+          </button>
+          
+          @if (selectedCountryId()) {
+            <div nz-button-group>
+              <button nz-button nzType="default" (click)="openCountryModal(countries().find(c => c.id === selectedCountryId()))" nz-tooltip nzTooltipTitle="Editar País">
+                <i nz-icon nzType="edit"></i>
+              </button>
+              <button nz-button nzType="default" nzDanger (click)="deleteCountry()" nz-tooltip nzTooltipTitle="Eliminar País">
+                <i nz-icon nzType="delete"></i>
+              </button>
+            </div>
+          }
+        </div>
+        
+        <div class="d-flex gap-2">
+          <button nz-button nzType="default" (click)="openCountryModal()" class="btn-flex">
+            <i nz-icon nzType="plus"></i> Nuevo País
+          </button>
+          <button nz-button nzType="primary" (click)="openStateModal()" class="btn-flex" [disabled]="!selectedCountryId()">
+            <i nz-icon nzType="plus"></i> Nuevo Departamento
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-white rounded shadow-sm overflow-hidden">
+        <nz-table #basicTable [nzData]="states()" [nzFrontPagination]="false" nzSize="middle" [nzBordered]="true">
+          <thead>
+            <tr>
+              <th style="width: 400px;">Nombre (Departamento / Ciudad)</th>
+              <th>Código ISO / DANE</th>
+              <th class="text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (state of basicTable.data; track state.id) {
+              <!-- State Row -->
+              <tr class="bg-light fw-bold">
+                <td class="pointer" (click)="toggleState(state)">
+                  <i nz-icon [nzType]="state.isExpanded ? 'down' : 'right'" class="me-2 text-primary"></i>
+                  <i nz-icon nzType="global" class="me-2"></i>
+                  {{ state.name }}
+                </td>
+                <td>{{ state.code }}</td>
+                <td class="text-center">
+                  <button nz-button nzType="text" nzSize="small" (click)="openCityModal(state.id)" nz-tooltip nzTooltipTitle="Agregar Ciudad">
+                    <i nz-icon nzType="plus-circle" class="text-success"></i>
+                  </button>
+                  <nz-divider nzType="vertical"></nz-divider>
+                  <button nz-button nzType="text" nzSize="small" (click)="openStateModal(state)" nz-tooltip nzTooltipTitle="Editar Departamento">
+                    <i nz-icon nzType="edit" class="text-primary"></i>
+                  </button>
+                  <nz-divider nzType="vertical"></nz-divider>
+                  <button nz-button nzType="text" nzSize="small" (click)="deleteState(state)" nz-tooltip nzTooltipTitle="Eliminar Departamento">
+                    <i nz-icon nzType="delete" class="text-danger"></i>
+                  </button>
+                </td>
+              </tr>
+
+              <!-- Cities Rows -->
+              @if (state.isExpanded) {
+                @for (city of state.cities; track city.id) {
+                  <tr>
+                    <td style="padding-left: 40px;">
+                      <i nz-icon nzType="environment" class="me-2 text-muted"></i>
+                      {{ city.name }}
+                    </td>
+                    <td>{{ city.daneCode }}</td>
+                    <td class="text-center">
+                      <button nz-button nzType="text" nzSize="small" (click)="openCityModal(state.id, city)" nz-tooltip nzTooltipTitle="Editar Ciudad">
+                        <i nz-icon nzType="edit" class="text-primary"></i>
+                      </button>
+                      <nz-divider nzType="vertical"></nz-divider>
+                      <button nz-button nzType="text" nzSize="small" (click)="deleteCity(state.id, city)" nz-tooltip nzTooltipTitle="Eliminar Ciudad">
+                        <i nz-icon nzType="delete" class="text-danger"></i>
+                      </button>
+                    </td>
+                  </tr>
+                }
+                @if (state.cities?.length === 0) {
+                  <tr>
+                    <td colspan="3" class="text-center text-muted py-2">
+                      <small>No hay ciudades registradas en este departamento</small>
+                    </td>
+                  </tr>
+                }
+              }
+            }
+            @if (states().length === 0 && selectedCountryId()) {
+              <tr>
+                <td colspan="3" class="text-center py-4 text-muted">
+                  No se encontraron departamentos para este país
+                </td>
+              </tr>
+            }
+            @if (!selectedCountryId()) {
+              <tr>
+                <td colspan="3" class="text-center py-5 text-muted">
+                  <i nz-icon nzType="info-circle" style="font-size: 24px;" class="mb-2"></i>
+                  <p>Seleccione un país y haga clic en Filtrar para ver la geografía</p>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </nz-table>
+      </div>
+    </nz-spin>
+  </div>
+</div>

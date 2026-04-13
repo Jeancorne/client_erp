@@ -16,7 +16,7 @@ import { BreadcrumbComponent } from '../../../../shared/breadcrumb/breadcrumb.co
 import { TableFilterComponent } from '../../../../shared/table-filter/table-filter.component';
 import { CompanyFormComponent } from '../../components/company-form/company-form.component';
 import { CompanyService } from '../../../../../core/services/core/company.service';
-import { Company } from '../../../../../core/models/company.models';
+import { Company } from '../../../../../core/models/company/company.model';
 
 @Component({
   selector: 'app-company',

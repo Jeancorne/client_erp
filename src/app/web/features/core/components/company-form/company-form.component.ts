@@ -14,7 +14,9 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { CurrencyService } from '../../../../../core/services/core/currency.service';
 import { FiscalResponsibilityService } from '../../../../../core/services/core/fiscal-responsibility.service';
 import { CompanyService } from '../../../../../core/services/core/company.service';
-import { Currency, FiscalResponsibility, Company } from '../../../../../core/models/company.models';
+import { Company } from '../../../../../core/models/company/company.model';
+import { Currency } from '../../../../../core/models/core/currency/currency.model';
+import { FiscalResponsibility } from '../../../../../core/models/core/fiscal-responsibility/fiscal-responsibility.model';
 
 @Component({
   selector: 'app-company-form',
