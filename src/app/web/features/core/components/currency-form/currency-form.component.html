@@ -1,0 +1,36 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" nzLayout="vertical" class="erp-form-container">
+  <div class="erp-form-body">
+    <div class="erp-form-panel mt-3">
+      <nz-form-item>
+        <nz-form-label nzRequired>Nombre de la Moneda</nz-form-label>
+        <nz-form-control nzErrorTip="Ingrese el nombre (Ej: Peso Colombiano)">
+          <input nz-input formControlName="name" placeholder="Ej: Peso Colombiano" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <div class="row">
+        <div class="col-6">
+          <nz-form-item>
+            <nz-form-label nzRequired>Código ISO</nz-form-label>
+            <nz-form-control nzErrorTip="Máx 5 carac. (Ej: COP)">
+              <input nz-input formControlName="code" placeholder="COP" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-6">
+          <nz-form-item>
+            <nz-form-label nzRequired>Símbolo</nz-form-label>
+            <nz-form-control nzErrorTip="Ej: $">
+              <input nz-input formControlName="symbol" placeholder="$" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="erp-form-footer">
+    <button nz-button nzType="default" (click)="cancel()" type="button" class="me-2">Cancelar</button>
+    <button nz-button nzType="primary" [nzLoading]="isLoading()" type="submit">{{ isEdit ? 'Actualizar Moneda' : 'Crear Moneda' }}</button>
+  </div>
+</form>

@@ -1,0 +1,43 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" nzLayout="vertical" class="erp-form-container">
+  <div class="erp-form-body">
+    <div class="erp-form-panel mt-3">
+      <div class="row">
+        <div class="col-4">
+          <nz-form-item>
+            <nz-form-label nzRequired>Código</nz-form-label>
+            <nz-form-control nzErrorTip="Ingrese el código (Ej: O-48)">
+              <input nz-input formControlName="code" placeholder="Ej: O-48" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-8">
+          <nz-form-item>
+            <nz-form-label nzRequired>Nombre de la Responsabilidad</nz-form-label>
+            <nz-form-control nzErrorTip="Ingrese el nombre completo">
+              <input nz-input formControlName="name" placeholder="Ej: Responsable de IVA" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <nz-form-item>
+        <nz-form-label>Descripción</nz-form-label>
+        <nz-form-control>
+          <textarea nz-input formControlName="description" [nzAutosize]="{ minRows: 2, maxRows: 4 }" placeholder="Descripción detallada de la responsabilidad fiscal"></textarea>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label>Estado</nz-form-label>
+        <nz-form-control>
+          <nz-switch formControlName="isActive" nzCheckedChildren="Activo" nzUnCheckedChildren="Inactivo"></nz-switch>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+
+  <div class="erp-form-footer">
+    <button nz-button nzType="default" (click)="cancel()" type="button" class="me-2">Cancelar</button>
+    <button nz-button nzType="primary" [nzLoading]="isLoading()" type="submit">{{ isEdit ? 'Actualizar' : 'Crear' }}</button>
+  </div>
+</form>

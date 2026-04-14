@@ -24,3 +24,65 @@ body {
   /* background: #fff;   */
   min-height: 100%;
 }
+
+/* --- ESTÁNDAR DE FORMULARIOS EN MODALES ERP --- */
+
+/* Contenedor principal del formulario */
+.erp-form-container {
+  display: flex;
+  flex-direction: column;
+  max-height: 75vh;
+}
+
+/* Cuerpo del formulario con scroll */
+.erp-form-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+/* Footer fijo en la parte inferior */
+.erp-form-footer {
+  flex-shrink: 0;
+  padding: 16px 24px;
+  border-top: 1px solid #f0f0f0;
+  background: #fff;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  text-align: right;
+}
+
+/* Scrollbar estilizado para formularios */
+.erp-form-body::-webkit-scrollbar {
+  width: 6px;
+}
+.erp-form-body::-webkit-scrollbar-thumb {
+  background: #d9d9d9;
+  border-radius: 10px;
+}
+.erp-form-body::-webkit-scrollbar-thumb:hover {
+  background: #bfbfbf;
+}
+.erp-form-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Paneles internos consistentes */
+.erp-form-panel {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+/* Ajustes responsivos globales */
+@media (max-width: 576px) {
+  .erp-form-container {
+    max-height: 85vh;
+  }
+  .erp-form-body {
+    padding: 15px;
+  }
+}

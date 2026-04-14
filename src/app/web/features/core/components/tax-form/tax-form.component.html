@@ -1,0 +1,149 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" nzLayout="vertical" class="erp-form-container">
+  
+  <div class="erp-form-body">
+    <!-- Panel de Configuración -->
+    <div class="erp-form-panel">
+      <div class="row">
+        <div class="col-6">
+          <nz-form-item>
+            <nz-form-label nzRequired>Empresa</nz-form-label>
+            <nz-form-control nzErrorTip="Seleccione una empresa">
+              <nz-select formControlName="coreCompanyId" nzShowSearch nzPlaceHolder="Seleccionar empresa">
+                @for (item of companies(); track item.id) {
+                  <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+                }
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-6">
+          <nz-form-item>
+            <nz-form-label nzRequired>Nombre del Impuesto</nz-form-label>
+            <nz-form-control nzErrorTip="Ingrese el nombre">
+              <input nz-input formControlName="name" placeholder="Ej: IVA 19% Generales" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <nz-form-item>
+            <nz-form-label nzRequired>Tipo de Impuesto</nz-form-label>
+            <nz-form-control nzErrorTip="Seleccione un tipo">
+              <nz-select formControlName="coreTaxTypeId" nzShowSearch nzPlaceHolder="Seleccionar tipo">
+                @for (item of taxTypes(); track item.id) {
+                  <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+                }
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-6">
+          <nz-form-item>
+            <nz-form-label nzRequired>Tipo Cálculo</nz-form-label>
+            <nz-form-control>
+              <nz-select formControlName="calculationType" (ngModelChange)="onCalculationTypeChange($event)">
+                <nz-option nzLabel="Porcentaje (%)" nzValue="PERC"></nz-option>
+                <nz-option nzLabel="Valor Fijo ($)" nzValue="FIXED"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          @if (isPercentage()) {
+            <nz-form-item>
+              <nz-form-label nzRequired>Tasa %</nz-form-label>
+              <nz-form-control>
+                <nz-input-number formControlName="ratePercent" [nzMin]="0" [nzMax]="100" [nzStep]="0.01" nzPlaceHolder="0.00" style="width: 100%"></nz-input-number>
+              </nz-form-control>
+            </nz-form-item>
+          } @else {
+            <nz-form-item>
+              <nz-form-label nzRequired>Valor Fijo</nz-form-label>
+              <nz-form-control>
+                <nz-input-number formControlName="fixedAmount" [nzMin]="0" nzPlaceHolder="0.00" style="width: 100%"></nz-input-number>
+              </nz-form-control>
+            </nz-form-item>
+          }
+        </div>
+        <div class="col-6">
+          <nz-form-item>
+            <nz-form-label>Estado</nz-form-label>
+            <nz-form-control>
+              <nz-switch formControlName="isActive" nzCheckedChildren="Activo" nzUnCheckedChildren="Inactivo"></nz-switch>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <nz-form-item>
+            <nz-form-label>Base Mínima Pesos</nz-form-label>
+            <nz-form-control>
+              <nz-input-number formControlName="minBaseAmount" [nzMin]="0" style="width: 100%"></nz-input-number>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-6">
+          <nz-form-item>
+            <nz-form-label>Base Mínima UVT</nz-form-label>
+            <nz-form-control>
+              <nz-input-number formControlName="minBaseUvt" [nzMin]="0" style="width: 100%"></nz-input-number>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </div>
+
+    <nz-divider nzText="Ubicación Geográfica (Si aplica)"></nz-divider>
+
+    <div class="row">
+      <div class="col-4">
+        <nz-form-item>
+          <nz-form-label>País</nz-form-label>
+          <nz-form-control>
+            <nz-select formControlName="coreCountryId" (ngModelChange)="onCountryChange($event)" nzShowSearch nzAllowClear nzPlaceHolder="País">
+              @for (c of countries(); track c.id) {
+                <nz-option [nzLabel]="c.name" [nzValue]="c.id"></nz-option>
+              }
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div class="col-4">
+        <nz-form-item>
+          <nz-form-label>Departamento</nz-form-label>
+          <nz-form-control>
+            <nz-select formControlName="coreStateId" (ngModelChange)="onStateChange($event)" nzShowSearch nzAllowClear nzPlaceHolder="Departamento" [nzDisabled]="!validateForm.value.coreCountryId">
+              @for (s of states(); track s.id) {
+                <nz-option [nzLabel]="s.name" [nzValue]="s.id"></nz-option>
+              }
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div class="col-4">
+        <nz-form-item>
+          <nz-form-label>Ciudad / Municipio</nz-form-label>
+          <nz-form-control>
+            <nz-select formControlName="coreCityId" nzShowSearch nzAllowClear nzPlaceHolder="Ciudad" [nzDisabled]="!validateForm.value.coreStateId">
+              @for (city of cities(); track city.id) {
+                <nz-option [nzLabel]="city.name" [nzValue]="city.id"></nz-option>
+              }
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </div>
+
+  <div class="erp-form-footer">
+    <button nz-button nzType="default" (click)="cancel()" type="button" class="me-2">Cancelar</button>
+    <button nz-button nzType="primary" [nzLoading]="isLoading()" type="submit">{{ isEdit ? 'Actualizar Impuesto' : 'Crear Impuesto' }}</button>
+  </div>
+</form>

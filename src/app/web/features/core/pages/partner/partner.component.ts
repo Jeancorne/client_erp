@@ -91,6 +91,8 @@ export class PartnerComponent implements OnInit {
       nzContent: PartnerFormComponent,
       nzWidth: 900,
       nzMaskClosable: false,
+      nzCentered: true,
+      nzBodyStyle: { padding: '0' },
       nzData: {
         partnerData: partner
       },

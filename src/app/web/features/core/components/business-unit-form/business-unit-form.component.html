@@ -1,56 +1,60 @@
-<form nz-form [formGroup]="validateForm" nzLayout="vertical">
-  <div class="row mt-3">
-    <div class="col-md-6">
-      <nz-form-item>
-        <nz-form-label nzRequired>Empresa</nz-form-label>
-        <nz-form-control nzErrorTip="Campo requerido">
-          <nz-select 
-            formControlName="coreCompanyId" 
-            nzPlaceHolder="Seleccionar empresa" 
-            nzShowSearch
-            (ngModelChange)="onCompanyChange($event)"
-          >
-            @for (item of companies(); track item.id) {
-              <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
-            }
-          </nz-select>
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-    <div class="col-md-6">
-      <nz-form-item>
-        <nz-form-label nzRequired>Nombre Unidad</nz-form-label>
-        <nz-form-control nzErrorTip="Campo requerido">
-          <input nz-input formControlName="name" placeholder="Ej: Unidad Comercial" />
-        </nz-form-control>
-      </nz-form-item>
+<form nz-form [formGroup]="validateForm" nzLayout="vertical" class="erp-form-container">
+  <div class="erp-form-body">
+    <div class="erp-form-panel">
+      <div class="row">
+        <div class="col-md-6">
+          <nz-form-item>
+            <nz-form-label nzRequired>Empresa</nz-form-label>
+            <nz-form-control nzErrorTip="Campo requerido">
+              <nz-select 
+                formControlName="coreCompanyId" 
+                nzPlaceHolder="Seleccionar empresa" 
+                nzShowSearch
+                (ngModelChange)="onCompanyChange($event)"
+              >
+                @for (item of companies(); track item.id) {
+                  <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+                }
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-md-6">
+          <nz-form-item>
+            <nz-form-label nzRequired>Nombre Unidad</nz-form-label>
+            <nz-form-control nzErrorTip="Campo requerido">
+              <input nz-input formControlName="name" placeholder="Ej: Unidad Comercial" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-8">
+          <nz-form-item>
+            <nz-form-label nzRequired>Responsable / Gerente</nz-form-label>
+            <nz-form-control nzErrorTip="Campo requerido">
+              <nz-select 
+                formControlName="coreUserIdManager" 
+                nzPlaceHolder="Seleccionar gerente" 
+                nzShowSearch 
+                [nzDisabled]="!validateForm.get('coreCompanyId')?.value"
+              >
+                @for (item of managers(); track item.id) {
+                  <nz-option [nzLabel]="item.firstName + ' ' + item.lastName + ' (' + item.username + ')'" [nzValue]="item.id"></nz-option>
+                }
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-md-4 d-flex align-items-center mt-3">
+          <label nz-checkbox formControlName="isActive">Unidad Activa</label>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-md-8">
-      <nz-form-item>
-        <nz-form-label nzRequired>Responsable / Gerente</nz-form-label>
-        <nz-form-control nzErrorTip="Campo requerido">
-          <nz-select 
-            formControlName="coreUserIdManager" 
-            nzPlaceHolder="Seleccionar gerente" 
-            nzShowSearch 
-            [nzDisabled]="!validateForm.get('coreCompanyId')?.value"
-          >
-            @for (item of managers(); track item.id) {
-              <nz-option [nzLabel]="item.firstName + ' ' + item.lastName + ' (' + item.username + ')'" [nzValue]="item.id"></nz-option>
-            }
-          </nz-select>
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-    <div class="col-md-4 d-flex align-items-center mt-3">
-      <label nz-checkbox formControlName="isActive">Unidad Activa</label>
-    </div>
-  </div>
-
-  <div class="modal-footer-custom mt-4 d-flex justify-content-end gap-2">
+  <div class="erp-form-footer">
     <button nz-button nzType="default" (click)="handleCancel()" [disabled]="isSubmitting()">Cancelar</button>
     <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isSubmitting()">
       Guardar Unidad

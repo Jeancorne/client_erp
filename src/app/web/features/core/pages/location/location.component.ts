@@ -81,8 +81,8 @@ export class LocationComponent implements OnInit {
 
     this.isLoading.set(true);
     try {
-      const data = await this.stateService.getByCountry(countryId);
-      this.states.set(data.map(s => ({ ...s, isExpanded: false, cities: [] })));
+      const data = await this.stateService.getByCountryWithCities(countryId);
+      this.states.set(data.map(s => ({ ...s, isExpanded: false })));
     } catch (error) {
       this.message.error('Error al cargar departamentos');
     } finally {
@@ -90,16 +90,8 @@ export class LocationComponent implements OnInit {
     }
   }
 
-  async toggleState(state: StateWithCities) {
+  toggleState(state: StateWithCities) {
     state.isExpanded = !state.isExpanded;
-    if (state.isExpanded && state.cities?.length === 0) {
-      try {
-        const cities = await this.cityService.getByState(state.id);
-        state.cities = cities;
-      } catch (error) {
-        this.message.error('Error al cargar ciudades');
-      }
-    }
   }
 
   // --- CRUD Country ---
@@ -108,7 +100,9 @@ export class LocationComponent implements OnInit {
       nzTitle: country ? 'Editar País' : 'Nuevo País',
       nzContent: CountryFormComponent,
       nzData: { countryData: country },
-      nzFooter: null
+      nzFooter: null,
+      nzCentered: true,
+      nzBodyStyle: { padding: '0' }
     });
 
     modalRef.afterClose.subscribe(result => {
@@ -150,7 +144,9 @@ export class LocationComponent implements OnInit {
         stateData: state,
         countryId: this.selectedCountryId()
       },
-      nzFooter: null
+      nzFooter: null,
+      nzCentered: true,
+      nzBodyStyle: { padding: '0' }
     });
 
     modalRef.afterClose.subscribe(result => {
@@ -184,7 +180,9 @@ export class LocationComponent implements OnInit {
         cityData: city,
         stateId: stateId
       },
-      nzFooter: null
+      nzFooter: null,
+      nzCentered: true,
+      nzBodyStyle: { padding: '0' }
     });
 
     modalRef.afterClose.subscribe(result => {

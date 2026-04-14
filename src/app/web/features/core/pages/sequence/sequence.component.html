@@ -1,0 +1,65 @@
+<div>
+  <app-breadcrumb [items]="breadcrumbItems"></app-breadcrumb>
+
+  <div class="body-content mt-3">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h4 class="mb-0">Numeración y Secuencias</h4>
+      <button nz-button nzType="primary" (click)="openSequenceModal()">
+        <i nz-icon nzType="plus"></i> Nueva Secuencia
+      </button>
+    </div>
+
+    <div class="bg-white rounded shadow-sm overflow-hidden p-3">
+      <nz-table #seqTable [nzData]="sequences()" [nzLoading]="isLoading()" nzSize="middle" [nzBordered]="true">
+        <thead>
+          <tr>
+            <th>Empresa</th>
+            <th>Nombre / Etiqueta</th>
+            <th>Doc.</th>
+            <th>Prefijo</th>
+            <th class="text-center">Siguiente</th>
+            <th>Rango</th>
+            <th>Vence</th>
+            <th class="text-center">Estado</th>
+            <th class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (seq of seqTable.data; track seq.id) {
+            <tr>
+              <td>{{ seq.coreCompanyName }}</td>
+              <td><b>{{ seq.name }}</b></td>
+              <td><nz-tag>{{ seq.documentCode }}</nz-tag></td>
+              <td>{{ seq.prefix }}</td>
+              <td class="text-center">
+                <span class="text-primary fw-bold">{{ seq.nextNumber | number }}</span>
+              </td>
+              <td><small>{{ seq.rangeFrom }} - {{ seq.rangeTo }}</small></td>
+              <td>
+                @if (seq.validTo) {
+                  {{ seq.validTo | date:'shortDate' }}
+                } @else {
+                  <span class="text-muted">N/A</span>
+                }
+              </td>
+              <td class="text-center">
+                <nz-tag [nzColor]="getStatusColor(seq.status)">
+                  {{ getStatusLabel(seq.status) }}
+                </nz-tag>
+              </td>
+              <td class="text-center">
+                <button nz-button nzType="text" nzSize="small" (click)="openSequenceModal(seq)" nz-tooltip nzTooltipTitle="Ver/Editar">
+                  <i nz-icon nzType="edit" class="text-primary"></i>
+                </button>
+                <nz-divider nzType="vertical"></nz-divider>
+                <button nz-button nzType="text" nzSize="small" (click)="deleteSequence(seq)" nz-tooltip nzTooltipTitle="Eliminar">
+                  <i nz-icon nzType="delete" class="text-danger"></i>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>

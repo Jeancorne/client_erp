@@ -1,0 +1,35 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" nzLayout="vertical" class="erp-form-container">
+  <div class="erp-form-body">
+    <div class="erp-form-panel mt-3">
+      <nz-form-item>
+        <nz-form-label nzRequired>País Origen</nz-form-label>
+        <nz-form-control nzErrorTip="Seleccione un país">
+          <nz-select formControlName="coreCountryId" nzShowSearch nzPlaceHolder="Seleccionar país">
+            @for (item of countries(); track item.id) {
+              <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+            }
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label nzRequired>Nombre Completo</nz-form-label>
+        <nz-form-control nzErrorTip="Ingrese el nombre completo del documento">
+          <input nz-input formControlName="name" placeholder="Ej: Cédula de Ciudadanía, Pasaporte" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label nzRequired>Código Corto</nz-form-label>
+        <nz-form-control nzErrorTip="Ingrese el código (Ej: CC, NIT, PAS)">
+          <input nz-input formControlName="code" placeholder="Ej: CC" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+
+  <div class="erp-form-footer">
+    <button nz-button nzType="default" (click)="cancel()" type="button" class="me-2">Cancelar</button>
+    <button nz-button nzType="primary" [nzLoading]="isLoading()" type="submit">{{ isEdit ? 'Actualizar Tipo' : 'Crear Tipo' }}</button>
+  </div>
+</form>

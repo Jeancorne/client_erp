@@ -2,13 +2,14 @@ export interface FiscalResponsibility {
   id: string;
   code: string;
   name: string;
-  description?: string;
-  isActive?: boolean;
+  description?: string | null;
+  isActive: boolean;
+  createdAt?: string;
 }
 
 export interface CompanyFiscalResponsibility {
-  id: string;
+  coreCompanyId: string;
   coreFiscalResponsibilityId: string;
-  code: string;
-  name: string;
+  name?: string;
+  code?: string;
 }

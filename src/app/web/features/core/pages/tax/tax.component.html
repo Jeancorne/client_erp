@@ -1,0 +1,57 @@
+<div>
+  <app-breadcrumb [items]="breadcrumbItems"></app-breadcrumb>
+
+  <div class="body-content mt-3">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h4 class="mb-0">Catálogo de Impuestos</h4>
+      <button nz-button nzType="primary" (click)="openTaxModal()">
+        <i nz-icon nzType="plus"></i> Nuevo Impuesto
+      </button>
+    </div>
+
+    <div class="bg-white rounded shadow-sm overflow-hidden">
+      <nz-table #taxTable [nzData]="taxes()" [nzLoading]="isLoading()" nzSize="middle" [nzBordered]="true">
+        <thead>
+          <tr>
+            <th>Empresa</th>
+            <th>Nombre</th>
+            <th>Tasa %</th>
+            <th>Tipo Impuesto</th>
+            <th class="text-center">Estado</th>
+            <th class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (tax of taxTable.data; track tax.id) {
+            <tr>
+              <td>{{ tax.coreCompanyName }}</td>
+              <td><b>{{ tax.name }}</b></td>
+              <td>
+                @if (tax.calculationType === 'PERC') {
+                  {{ tax.ratePercent }}%
+                } @else {
+                  $ {{ tax.fixedAmount | number:'1.2-2' }} (Fijo)
+                }
+              </td>
+              <td>{{ tax.coreTaxTypeName }}</td>
+              <td class="text-center">
+                <nz-tag [nzColor]="tax.isActive ? 'success' : 'error'">
+                  {{ tax.isActive ? 'Activo' : 'Inactivo' }}
+                </nz-tag>
+              </td>
+              <td class="text-center">
+                <button nz-button nzType="text" nzSize="small" (click)="openTaxModal(tax)" nz-tooltip nzTooltipTitle="Ver/Editar">
+                  <i nz-icon nzType="edit" class="text-primary"></i>
+                </button>
+                <nz-divider nzType="vertical"></nz-divider>
+                <button nz-button nzType="text" nzSize="small" (click)="deleteTax(tax)" nz-tooltip nzTooltipTitle="Eliminar">
+                  <i nz-icon nzType="delete" class="text-danger"></i>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>

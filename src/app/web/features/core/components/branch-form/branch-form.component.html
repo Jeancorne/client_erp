@@ -1,102 +1,106 @@
-<form nz-form [formGroup]="validateForm" nzLayout="vertical">
-  <div class="row mt-3">
-    <div class="col-md-6">
-      <nz-form-item>
-        <nz-form-label nzRequired>Empresa Dueña</nz-form-label>
-        <nz-form-control nzErrorTip="Campo requerido">
-          <nz-select formControlName="coreCompanyId" nzPlaceHolder="Seleccionar empresa" nzShowSearch>
-            @for (item of companies(); track item.id) {
-              <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
-            }
-          </nz-select>
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-    <div class="col-md-6">
-      <nz-form-item>
-        <nz-form-label nzRequired>Nombre Sucursal</nz-form-label>
-        <nz-form-control nzErrorTip="Campo requerido">
-          <input nz-input formControlName="name" placeholder="Ej: Sede Principal - Bogotá" />
-        </nz-form-control>
-      </nz-form-item>
+<form nz-form [formGroup]="validateForm" nzLayout="vertical" class="erp-form-container">
+  <div class="erp-form-body">
+    <div class="erp-form-panel">
+      <div class="row">
+        <div class="col-md-6">
+          <nz-form-item>
+            <nz-form-label nzRequired>Empresa Dueña</nz-form-label>
+            <nz-form-control nzErrorTip="Campo requerido">
+              <nz-select formControlName="coreCompanyId" nzPlaceHolder="Seleccionar empresa" nzShowSearch>
+                @for (item of companies(); track item.id) {
+                  <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+                }
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-md-6">
+          <nz-form-item>
+            <nz-form-label nzRequired>Nombre Sucursal</nz-form-label>
+            <nz-form-control nzErrorTip="Campo requerido">
+              <input nz-input formControlName="name" placeholder="Ej: Sede Principal - Bogotá" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <nz-form-item>
+            <nz-form-label>País</nz-form-label>
+            <nz-form-control>
+              <nz-select [ngModel]="selectedCountryId()" (ngModelChange)="onCountryChange($event)" [ngModelOptions]="{standalone: true}" nzPlaceHolder="Seleccionar país" nzShowSearch>
+                @for (item of countries(); track item.id) {
+                  <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+                }
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-md-4">
+          <nz-form-item>
+            <nz-form-label>Departamento / Estado</nz-form-label>
+            <nz-form-control>
+              <nz-select [ngModel]="selectedStateId()" (ngModelChange)="onStateChange($event)" [ngModelOptions]="{standalone: true}" nzPlaceHolder="Seleccionar departamento" nzShowSearch [nzDisabled]="!selectedCountryId()">
+                @for (item of states(); track item.id) {
+                  <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+                }
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-md-4">
+          <nz-form-item>
+            <nz-form-label nzRequired>Ciudad</nz-form-label>
+            <nz-form-control nzErrorTip="Campo requerido">
+              <nz-select formControlName="coreCityId" nzPlaceHolder="Seleccionar ciudad" nzShowSearch [nzDisabled]="!selectedStateId()">
+                @for (item of cities(); track item.id) {
+                  <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+                }
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-8">
+          <nz-form-item>
+            <nz-form-label>Dirección</nz-form-label>
+            <nz-form-control>
+              <input nz-input formControlName="address" placeholder="Calle 100 # 15-20" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-md-4">
+          <nz-form-item>
+            <nz-form-label>Teléfono</nz-form-label>
+            <nz-form-control>
+              <input nz-input formControlName="phone" placeholder="+57 1 234 5678" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-8">
+          <nz-form-item>
+            <nz-form-label>C. Costo Defecto</nz-form-label>
+            <nz-form-control>
+              <nz-select formControlName="defaultAccAnalyticAccountId" nzPlaceHolder="No disponible por el momento" nzDisabled>
+                <nz-option nzLabel="--" [nzValue]="null"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-md-4 d-flex align-items-center mt-3">
+          <label nz-checkbox formControlName="isActive">Sede Activa</label>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-md-4">
-      <nz-form-item>
-        <nz-form-label>País</nz-form-label>
-        <nz-form-control>
-          <nz-select [ngModel]="selectedCountryId()" (ngModelChange)="onCountryChange($event)" [ngModelOptions]="{standalone: true}" nzPlaceHolder="Seleccionar país" nzShowSearch>
-            @for (item of countries(); track item.id) {
-              <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
-            }
-          </nz-select>
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-    <div class="col-md-4">
-      <nz-form-item>
-        <nz-form-label>Departamento / Estado</nz-form-label>
-        <nz-form-control>
-          <nz-select [ngModel]="selectedStateId()" (ngModelChange)="onStateChange($event)" [ngModelOptions]="{standalone: true}" nzPlaceHolder="Seleccionar departamento" nzShowSearch [nzDisabled]="!selectedCountryId()">
-            @for (item of states(); track item.id) {
-              <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
-            }
-          </nz-select>
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-    <div class="col-md-4">
-      <nz-form-item>
-        <nz-form-label nzRequired>Ciudad</nz-form-label>
-        <nz-form-control nzErrorTip="Campo requerido">
-          <nz-select formControlName="coreCityId" nzPlaceHolder="Seleccionar ciudad" nzShowSearch [nzDisabled]="!selectedStateId()">
-            @for (item of cities(); track item.id) {
-              <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
-            }
-          </nz-select>
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-8">
-      <nz-form-item>
-        <nz-form-label>Dirección</nz-form-label>
-        <nz-form-control>
-          <input nz-input formControlName="address" placeholder="Calle 100 # 15-20" />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-    <div class="col-md-4">
-      <nz-form-item>
-        <nz-form-label>Teléfono</nz-form-label>
-        <nz-form-control>
-          <input nz-input formControlName="phone" placeholder="+57 1 234 5678" />
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-8">
-      <nz-form-item>
-        <nz-form-label>C. Costo Defecto</nz-form-label>
-        <nz-form-control>
-          <nz-select formControlName="defaultAccAnalyticAccountId" nzPlaceHolder="No disponible por el momento" nzDisabled>
-            <nz-option nzLabel="--" [nzValue]="null"></nz-option>
-          </nz-select>
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-    <div class="col-md-4 d-flex align-items-center mt-3">
-      <label nz-checkbox formControlName="isActive">Sede Activa</label>
-    </div>
-  </div>
-
-  <div class="modal-footer-custom mt-4 d-flex justify-content-end gap-2">
+  <div class="erp-form-footer">
     <button nz-button nzType="default" (click)="handleCancel()" [disabled]="isSubmitting()">Cancelar</button>
     <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isSubmitting()">
       Guardar Sede

@@ -1,0 +1,53 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" nzLayout="vertical" class="erp-form-container">
+  <div class="erp-form-body">
+    <div class="erp-form-panel mt-3">
+      <div class="row">
+        <div class="col-8">
+          <nz-form-item>
+            <nz-form-label nzRequired>Nombre del Ítem</nz-form-label>
+            <nz-form-control nzErrorTip="Ingrese el nombre">
+              <input nz-input formControlName="name" placeholder="Ej: Usuarios, Facturación" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-4">
+          <nz-form-item>
+            <nz-form-label nzRequired>Secuencia</nz-form-label>
+            <nz-form-control>
+              <nz-input-number formControlName="sequence" [nzMin]="0" class="w-100"></nz-input-number>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <nz-form-item>
+        <nz-form-label>Ruta / Path (Si es una pantalla)</nz-form-label>
+        <nz-form-control>
+          <input nz-input formControlName="routePath" placeholder="Ej: main/core/users" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label>Estado</nz-form-label>
+        <nz-form-control>
+          <nz-switch formControlName="isActive" nzCheckedChildren="Activo" nzUnCheckedChildren="Inactivo"></nz-switch>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    
+    @if (parentId) {
+      <div class="text-muted">
+        <i nz-icon nzType="info-circle"></i> Se creará como sub-ítem del nodo actual.
+      </div>
+    } @else {
+      <div class="text-muted">
+        <i nz-icon nzType="info-circle"></i> Se creará como ítem de primer nivel en el módulo.
+      </div>
+    }
+  </div>
+
+  <div class="erp-form-footer">
+    <button nz-button nzType="default" (click)="cancel()" type="button" class="me-2">Cancelar</button>
+    <button nz-button nzType="primary" [nzLoading]="isLoading()" type="submit">Crear Ítem</button>
+  </div>
+</form>

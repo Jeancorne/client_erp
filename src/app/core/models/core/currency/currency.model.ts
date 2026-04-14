@@ -3,4 +3,5 @@ export interface Currency {
   code: string;
   name: string;
   symbol: string;
+  createdAt?: string;
 }

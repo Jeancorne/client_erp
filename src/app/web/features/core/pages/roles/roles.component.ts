@@ -347,6 +347,8 @@ export class RolesComponent implements OnInit {
       nzTitle: title,
       nzContent: RoleFormComponent,
       nzWidth: 500,
+      nzCentered: true,
+      nzBodyStyle: { padding: '0' },
       nzData: {
         roleData: role,
         companyId: companyId,

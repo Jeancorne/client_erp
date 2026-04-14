@@ -25,6 +25,11 @@ export class StateService {
     return response.succeeded ? response.data : [];
   }
 
+  async getByCountryWithCities(countryId: string): Promise<State[]> {
+    const response = await firstValueFrom(this.http.get<any>(`${this.apiUrl}/country/${countryId}/with-cities`));
+    return response.succeeded ? response.data : [];
+  }
+
   async create(state: State): Promise<any> {
     return await firstValueFrom(this.http.post<any>(this.apiUrl, state));
   }

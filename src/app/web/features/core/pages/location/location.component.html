@@ -16,7 +16,7 @@
           
           @if (selectedCountryId()) {
             <div nz-button-group>
-              <button nz-button nzType="default" (click)="openCountryModal(countries().find(c => c.id === selectedCountryId()))" nz-tooltip nzTooltipTitle="Editar País">
+              <button nz-button nzType="default" class="me-2" (click)="openCountryModal(countries().find(c => c.id === selectedCountryId()))" nz-tooltip nzTooltipTitle="Editar País">
                 <i nz-icon nzType="edit"></i>
               </button>
               <button nz-button nzType="default" nzDanger (click)="deleteCountry()" nz-tooltip nzTooltipTitle="Eliminar País">

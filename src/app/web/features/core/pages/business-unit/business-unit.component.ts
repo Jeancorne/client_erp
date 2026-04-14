@@ -90,6 +90,8 @@ export class BusinessUnitComponent implements OnInit {
       nzTitle: title,
       nzContent: BusinessUnitFormComponent,
       nzWidth: 700,
+      nzCentered: true,
+      nzBodyStyle: { padding: '0' },
       nzMaskClosable: false,
       nzFooter: null,
       nzData: {

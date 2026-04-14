@@ -1,0 +1,44 @@
+<div>
+  <app-breadcrumb [items]="breadcrumbItems"></app-breadcrumb>
+
+  <div class="body-content mt-3">
+    <div class="d-flex justify-content-between align-items-center mb-4">      
+      <button nz-button nzType="primary" (click)="openModal()">
+        <i nz-icon nzType="plus"></i> Nueva Moneda
+      </button>
+    </div>
+
+    <div class="bg-white rounded shadow-sm overflow-hidden p-3">
+      <nz-table #currTable [nzData]="currencies()" [nzLoading]="isLoading()" nzSize="middle" [nzBordered]="true">
+        <thead>
+          <tr>
+            <th style="width: 100px" class="text-center">Símbolo</th>
+            <th style="width: 150px">Código ISO</th>
+            <th>Nombre de la Moneda</th>
+            <th class="text-center" style="width: 150px">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of currTable.data; track item.id) {
+            <tr>
+              <td class="text-center">
+                <nz-tag [nzColor]="'blue'"><b>{{ item.symbol }}</b></nz-tag>
+              </td>
+              <td><b>{{ item.code }}</b></td>
+              <td>{{ item.name }}</td>
+              <td class="text-center">
+                <button nz-button nzType="text" nzSize="small" (click)="openModal(item)" nz-tooltip nzTooltipTitle="Editar">
+                  <i nz-icon nzType="edit" class="text-primary"></i>
+                </button>
+                <nz-divider nzType="vertical"></nz-divider>
+                <button nz-button nzType="text" nzSize="small" (click)="deleteCurrency(item)" nz-tooltip nzTooltipTitle="Eliminar">
+                  <i nz-icon nzType="delete" class="text-danger"></i>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>

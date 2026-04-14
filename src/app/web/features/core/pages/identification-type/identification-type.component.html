@@ -1,0 +1,45 @@
+<div>
+  <app-breadcrumb [items]="breadcrumbItems"></app-breadcrumb>
+
+  <div class="body-content mt-3">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h4 class="mb-0">Tipos de Identificación</h4>
+      <button nz-button nzType="primary" (click)="openModal()">
+        <i nz-icon nzType="plus"></i> Nuevo Tipo
+      </button>
+    </div>
+
+    <div class="bg-white rounded shadow-sm overflow-hidden p-3">
+      <nz-table #typeTable [nzData]="identificationTypes()" [nzLoading]="isLoading()" nzSize="middle" [nzBordered]="true">
+        <thead>
+          <tr>
+            <th>País</th>
+            <th>Nombre Completo</th>
+            <th class="text-center">Código Corto</th>
+            <th class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of typeTable.data; track item.id) {
+            <tr>
+              <td>{{ item.coreCountryName }}</td>
+              <td><b>{{ item.name }}</b></td>
+              <td class="text-center">
+                <nz-tag>{{ item.code }}</nz-tag>
+              </td>
+              <td class="text-center">
+                <button nz-button nzType="text" nzSize="small" (click)="openModal(item)" nz-tooltip nzTooltipTitle="Ver/Editar">
+                  <i nz-icon nzType="edit" class="text-primary"></i>
+                </button>
+                <nz-divider nzType="vertical"></nz-divider>
+                <button nz-button nzType="text" nzSize="small" (click)="deleteItem(item)" nz-tooltip nzTooltipTitle="Eliminar">
+                  <i nz-icon nzType="delete" class="text-danger"></i>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>

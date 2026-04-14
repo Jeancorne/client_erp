@@ -1,0 +1,42 @@
+.body-content {
+  padding: 24px;
+}
+
+h4 {
+  color: #001529;
+  font-weight: 600;
+}
+
+.bg-white {
+  background: #fff;
+}
+
+.rounded {
+  border-radius: 8px;
+}
+
+.shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.text-primary {
+  color: #1890ff;
+}
+
+.text-danger {
+  color: #ff4d4f;
+}
+
+/* Ajustes para tabla NG-ZORRO */
+:host ::ng-deep .ant-table-thead > tr > th {
+  background: #fafafa;
+  font-weight: 600;
+}

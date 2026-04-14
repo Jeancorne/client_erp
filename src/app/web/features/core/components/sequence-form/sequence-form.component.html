@@ -1,0 +1,209 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" nzLayout="vertical" class="erp-form-container">
+  <div class="erp-form-body">
+    
+    <nz-tabs>
+      <!-- TAB: DATOS GENERALES -->
+      <nz-tab nzTitle="Datos Generales">
+        <div class="erp-form-panel mt-3">
+          <div class="row">
+            <div class="col-6">
+              <nz-form-item>
+                <nz-form-label nzRequired>Empresa</nz-form-label>
+                <nz-form-control nzErrorTip="Seleccione una empresa">
+                  <nz-select formControlName="coreCompanyId" (ngModelChange)="onCompanyChange($event)" nzShowSearch nzPlaceHolder="Seleccionar empresa">
+                    @for (item of companies(); track item.id) {
+                      <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+                    }
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div class="col-6">
+              <nz-form-item>
+                <nz-form-label>Sede (Branch)</nz-form-label>
+                <nz-form-control>
+                  <nz-select formControlName="coreBranchId" nzShowSearch nzAllowClear nzPlaceHolder="Sede (Opcional)" [nzDisabled]="!validateForm.value.coreCompanyId">
+                    @for (b of branches(); track b.id) {
+                      <nz-option [nzLabel]="b.displayName" [nzValue]="b.id"></nz-option>
+                    }
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-8">
+              <nz-form-item>
+                <nz-form-label nzRequired>Nombre de la Secuencia</nz-form-label>
+                <nz-form-control nzErrorTip="Ingrese el nombre">
+                  <input nz-input formControlName="name" placeholder="Ej: Facturación Electrónica Principal" />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div class="col-4">
+              <nz-form-item>
+                <nz-form-label nzRequired>Código Documento</nz-form-label>
+                <nz-form-control nzErrorTip="Ej: SALE_INV">
+                  <input nz-input formControlName="documentCode" placeholder="Ej: FACTURA" />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <nz-form-item>
+                <nz-form-label nzRequired>Estado de Secuencia</nz-form-label>
+                <nz-form-control>
+                  <nz-select formControlName="status">
+                    @for (s of statuses; track s.value) {
+                      <nz-option [nzLabel]="s.label" [nzValue]="s.value"></nz-option>
+                    }
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div class="col-6 d-flex align-items-center mt-3">
+              <label nz-checkbox formControlName="isActive">Secuencia Activa</label>
+            </div>
+          </div>
+        </div>
+      </nz-tab>
+
+      <!-- TAB: FORMATO Y NUMERACIÓN -->
+      <nz-tab nzTitle="Formato y Numeración">
+        <div class="erp-form-panel mt-3">
+          <div class="row">
+            <div class="col-6">
+              <nz-form-item>
+                <nz-form-label>Prefijo</nz-form-label>
+                <nz-form-control>
+                  <input nz-input formControlName="prefix" placeholder="Ej: FE" />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div class="col-6">
+              <nz-form-item>
+                <nz-form-label>Sufijo</nz-form-label>
+                <nz-form-control>
+                  <input nz-input formControlName="suffix" placeholder="Ej: 2026" />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <nz-form-item>
+                <nz-form-label nzRequired>Relleno / Ceros (Padding)</nz-form-label>
+                <nz-form-control>
+                  <nz-input-number formControlName="padding" [nzMin]="0" [nzMax]="20" style="width: 100%"></nz-input-number>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div class="col-6">
+              <nz-form-item>
+                <nz-form-label nzRequired>Siguiente Número</nz-form-label>
+                <nz-form-control>
+                  <nz-input-number formControlName="nextNumber" [nzMin]="1" style="width: 100%"></nz-input-number>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+        </div>
+      </nz-tab>
+
+      <!-- TAB: RANGOS Y VIGENCIA -->
+      <nz-tab nzTitle="Rangos y Vigencia">
+        <div class="erp-form-panel mt-3">
+          <div class="row">
+            <div class="col-6">
+              <nz-form-item>
+                <nz-form-label nzRequired>Desde Número</nz-form-label>
+                <nz-form-control>
+                  <nz-input-number formControlName="rangeFrom" [nzMin]="0" style="width: 100%"></nz-input-number>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div class="col-6">
+              <nz-form-item>
+                <nz-form-label nzRequired>Hasta Número</nz-form-label>
+                <nz-form-control>
+                  <nz-input-number formControlName="rangeTo" [nzMin]="1" style="width: 100%"></nz-input-number>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <nz-form-item>
+                <nz-form-label>Válido Desde</nz-form-label>
+                <nz-form-control>
+                  <nz-date-picker formControlName="validFrom" style="width: 100%"></nz-date-picker>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div class="col-6">
+              <nz-form-item>
+                <nz-form-label>Válido Hasta</nz-form-label>
+                <nz-form-control>
+                  <nz-date-picker formControlName="validTo" style="width: 100%"></nz-date-picker>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+        </div>
+      </nz-tab>
+
+      <!-- TAB: REINICIO AUTOMÁTICO -->
+      <nz-tab nzTitle="Reinicio Automático">
+        <div class="erp-form-panel mt-3">
+          <div class="row">
+            <div class="col-6">
+              <nz-form-item>
+                <nz-form-label nzRequired>Tipo de Reinicio (Reset)</nz-form-label>
+                <nz-form-control>
+                  <nz-select formControlName="resetType">
+                    @for (r of resetTypes; track r.value) {
+                      <nz-option [nzLabel]="r.label" [nzValue]="r.value"></nz-option>
+                    }
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <nz-form-item>
+                <nz-form-label>Mes de Reinicio (1-12)</nz-form-label>
+                <nz-form-control>
+                  <nz-input-number formControlName="resetMonth" [nzMin]="1" [nzMax]="12" [nzDisabled]="validateForm.value.resetType === 'NONE' || validateForm.value.resetType === 'DAILY'" style="width: 100%"></nz-input-number>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div class="col-6">
+              <nz-form-item>
+                <nz-form-label>Día de Reinicio (1-31)</nz-form-label>
+                <nz-form-control>
+                  <nz-input-number formControlName="resetDay" [nzMin]="1" [nzMax]="31" [nzDisabled]="validateForm.value.resetType === 'NONE'" style="width: 100%"></nz-input-number>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+          
+          @if (nzModalData?.sequenceData?.lastResetAt) {
+            <div class="mt-2 text-muted">
+              <i nz-icon nzType="info-circle"></i> Último reinicio procesado: {{ nzModalData.sequenceData.lastResetAt | date:'medium' }}
+            </div>
+          }
+        </div>
+      </nz-tab>
+    </nz-tabs>
+
+  </div>
+
+  <div class="erp-form-footer">
+    <button nz-button nzType="default" (click)="cancel()" type="button" class="me-2">Cancelar</button>
+    <button nz-button nzType="primary" [nzLoading]="isLoading()" type="submit">{{ isEdit ? 'Actualizar Secuencia' : 'Crear Secuencia' }}</button>
+  </div>
+</form>

@@ -91,6 +91,8 @@ export class CompanyComponent implements OnInit {
       nzWidth: 800,
       nzMaskClosable: false,
       nzFooter: null,
+      nzCentered: true,
+      nzBodyStyle: { padding: '0' },
       nzData: {
         companyData: data,
         companies: this.companies()

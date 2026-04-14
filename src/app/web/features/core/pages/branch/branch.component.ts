@@ -90,6 +90,8 @@ export class BranchComponent implements OnInit {
       nzTitle: title,
       nzContent: BranchFormComponent,
       nzWidth: 800,
+      nzCentered: true,
+      nzBodyStyle: { padding: '0' },
       nzMaskClosable: false,
       nzFooter: null,
       nzData: {

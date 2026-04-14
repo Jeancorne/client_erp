@@ -92,6 +92,8 @@ export class UserComponent implements OnInit {
       nzWidth: 900,
       nzMaskClosable: false,
       nzFooter: null,
+      nzCentered: true,
+      nzBodyStyle: { padding: '0' },
       nzData: {
         userData: data
       }

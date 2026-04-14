@@ -1,0 +1,132 @@
+<div>
+  <app-breadcrumb [items]="breadcrumbItems"></app-breadcrumb>
+
+  <div class="body-content mt-3">
+    <nz-spin [nzSpinning]="isLoading()">
+      <div class="row">
+        <!-- LADO IZQUIERDO: ÁRBOL DE ESTRUCTURA -->
+        <div class="col-md-4">
+          <nz-card nzTitle="Estructura Jerárquica" [nzExtra]="treeExtra">
+            <div class="tree-container">
+              <nz-tree
+                [nzData]="treeData()"
+                nzDraggable
+                nzBlockNode
+                (nzClick)="onNodeClick($event)"
+                [nzTreeTemplate]="nzTreeTemplate">
+              </nz-tree>
+              
+              <ng-template #nzTreeTemplate let-node let-origin="origin">
+                <span class="custom-node">
+                  <i nz-icon [nzType]="node.origin.icon" class="me-2"></i>
+                  <span [class.text-muted]="!node.origin.origin.isActive">{{ node.title }}</span>
+                </span>
+              </ng-template>
+            </div>
+          </nz-card>
+          
+          <ng-template #treeExtra>
+            <button nz-button nzType="primary" nzSize="small" (click)="loadInitialData()">
+              <i nz-icon nzType="reload"></i>
+            </button>
+          </ng-template>
+        </div>
+
+        <!-- LADO DERECHO: FORMULARIO DE EDICIÓN -->
+        <div class="col-md-8">
+          @if (selectedNode()) {
+            <nz-card [nzTitle]="'Detalle de ' + (selectedNode()?.type === 'MODULE' ? 'Módulo' : 'Ítem')">
+              <form nz-form [formGroup]="validateForm" nzLayout="vertical">
+                <div class="row">
+                  <div class="col-md-8">
+                    <nz-form-item>
+                      <nz-form-label nzRequired>Nombre del Nodo</nz-form-label>
+                      <nz-form-control nzErrorTip="Nombre requerido">
+                        <input nz-input formControlName="name" />
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                  <div class="col-md-4">
+                    <nz-form-item>
+                      <nz-form-label>Secuencia</nz-form-label>
+                      <nz-form-control>
+                        <nz-input-number formControlName="sequence" [nzMin]="0" class="w-100"></nz-input-number>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <nz-form-item>
+                      <nz-form-label>{{ selectedNode()?.type === 'MODULE' ? 'Código del Módulo' : 'Ruta / Path' }}</nz-form-label>
+                      <nz-form-control>
+                        <input nz-input formControlName="code" [placeholder]="selectedNode()?.type === 'MODULE' ? 'Ej: CORE' : 'main/core/users'" />
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                  @if (selectedNode()?.type === 'MODULE') {
+                    <div class="col-md-4">
+                      <nz-form-item>
+                        <nz-form-label>Ícono</nz-form-label>
+                        <nz-form-control>
+                          <input nz-input formControlName="icon" placeholder="Ej: setting, user, dashboard" />
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+                  }
+                  <div class="col-md-2 d-flex align-items-center mt-3">
+                    <nz-form-item>
+                      <nz-form-label>Estado</nz-form-label>
+                      <nz-form-control>
+                        <nz-switch formControlName="isActive" nzCheckedChildren="Activo" nzUnCheckedChildren="Inactivo"></nz-switch>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                </div>
+
+                <!-- SECCIÓN DE ACCIONES (Solo para Pantallas) -->
+                @if (selectedNode()?.type === 'ITEM' && selectedNode()?.data?.routePath) {
+                  <nz-divider nzText="Acciones Disponibles en esta Pantalla"></nz-divider>
+                  <div class="actions-container p-3 border rounded bg-light mb-4">
+                    <div class="d-flex flex-wrap gap-2">
+                      @for (action of actions(); track action.id) {
+                        <nz-tag 
+                          [nzColor]="isActionSelected(action.id) ? 'blue' : 'default'" 
+                          (click)="toggleAction(action)"
+                          class="pointer p-2">
+                          <i nz-icon [nzType]="isActionSelected(action.id) ? 'check' : 'plus'"></i>
+                          {{ action.name }}
+                        </nz-tag>
+                      }
+                    </div>
+                    <small class="text-muted mt-2 d-block">* Haga clic en una acción para activarla o desactivarla en esta pantalla.</small>
+                  </div>
+                }
+
+                <div class="form-actions text-end mt-4 pt-3 border-top">
+                  <button nz-button nzType="default" class="me-2" (click)="addNewChild()">
+                    <i nz-icon nzType="plus"></i> Añadir Hijo
+                  </button>
+                  <button nz-button nzType="primary" [nzLoading]="isSaving()" (click)="save()">
+                    <i nz-icon nzType="save"></i> Guardar Cambios
+                  </button>
+                  <nz-divider nzType="vertical"></nz-divider>
+                  <button nz-button nzType="primary" nzDanger 
+                    nz-popconfirm nzPopconfirmTitle="¿Eliminar este nodo y toda su descendencia?"
+                    (nzOnConfirm)="deleteNode()">
+                    <i nz-icon nzType="delete"></i>
+                  </button>
+                </div>
+              </form>
+            </nz-card>
+          } @else {
+            <div class="empty-state d-flex justify-content-center align-items-center border rounded bg-white" style="height: 400px;">
+              <nz-empty nzNotFoundImage="simple" nzNotFoundContent="Seleccione un módulo o ítem para editar"></nz-empty>
+            </div>
+          }
+        </div>
+      </div>
+    </nz-spin>
+  </div>
+</div>
