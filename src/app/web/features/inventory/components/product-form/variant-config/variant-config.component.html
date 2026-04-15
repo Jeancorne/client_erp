@@ -1,0 +1,133 @@
+<div class="erp-form-container">
+  <div class="erp-form-body p-0">
+    <!-- COLUMNA IZQUIERDA: CONFIGURACIÓN -->
+    <div class="config-sidebar">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0 fw-bold text-secondary">ATRIBUTOS</h5>
+        <button nz-button nzType="primary" nzSize="small" (click)="addAttributeLine()" nzShape="circle">
+          <i nz-icon nzType="plus"></i>
+        </button>
+      </div>
+
+      <form nz-form [formGroup]="configForm" nzLayout="vertical">
+        <div formArrayName="attributeLines">
+          @for (line of attributeLines.controls; track $index) {
+            <div [formGroupName]="$index" class="attribute-card shadow-sm">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <nz-select 
+                  formControlName="attributeId" 
+                  nzPlaceHolder="Atributo"
+                  (ngModelChange)="onAttributeChange($event, $index)"
+                  class="flex-grow-1 me-2"
+                  nzShowSearch>
+                  @for (attr of attributes(); track attr.id) {
+                    <nz-option [nzValue]="attr.id" [nzLabel]="attr.name"></nz-option>
+                  }
+                </nz-select>
+                <button nz-button nzType="text" nzDanger (click)="removeAttributeLine($index)" nzSize="small">
+                  <i nz-icon nzType="close"></i>
+                </button>
+              </div>
+
+              <div class="value-selector-container">
+                <nz-select 
+                  formControlName="values" 
+                  nzMode="multiple" 
+                  nzPlaceHolder="Seleccionar valores..."
+                  [nzMaxTagCount]="2"
+                  [nzMaxTagPlaceholder]="tagPlaceHolder"
+                  class="w-100"
+                  [nzDisabled]="!line.get('attributeId')?.value"
+                  nzShowArrow
+                  nzShowSearch>
+                  @for (val of attributeValuesMap()[line.get('attributeId')?.value]; track val.id) {
+                    <nz-option [nzValue]="val.id" [nzLabel]="val.name"></nz-option>
+                  }
+                </nz-select>
+                <ng-template #tagPlaceHolder let-selectedList>y {{ selectedList.length }} más...</ng-template>
+              </div>
+
+              <div class="mt-2 d-flex gap-2">
+                <button nz-button nzType="link" nzSize="small" class="p-0" 
+                  (click)="selectAllValues($index)" [disabled]="!line.get('attributeId')?.value">
+                  Seleccionar todos
+                </button>
+                <button nz-button nzType="link" nzSize="small" class="p-0 text-muted" 
+                  (click)="clearValues($index)" [disabled]="!line.get('attributeId')?.value">
+                  Limpiar
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      </form>
+
+      @if (attributeLines.length === 0) {
+        <div class="text-center p-4 border rounded bg-white dashed-border">
+          <p class="text-muted small mb-0">No hay atributos. Haga clic en (+) arriba.</p>
+        </div>
+      }
+    </div>
+
+    <!-- COLUMNA DERECHA: PREVISUALIZACIÓN -->
+    <div class="preview-content">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0 fw-bold text-secondary">PREVISUALIZACIÓN DE VARIANTES</h5>
+        @if (previewVariants().length > 0) {
+          <nz-tag nzColor="blue">{{ previewVariants().length }} combinaciones</nz-tag>
+        }
+      </div>
+
+      <div class="preview-table-wrapper border rounded overflow-hidden">
+        <nz-table #previewTable [nzData]="previewVariants()" nzSize="small" [nzShowPagination]="false">
+          <thead>
+            <tr>
+              <th>Nombre de Variante</th>
+              <th nzWidth="180px">SKU (Editable)</th>
+              <th nzWidth="180px">Código Barras</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (v of previewTable.data; track $index) {
+              <tr>
+                <td>
+                  <span class="text-muted small d-block mb-1">Combinación:</span>
+                  <span class="fw-semibold">{{ v.name }}</span>
+                </td>
+                <td>
+                  <input nz-input [(ngModel)]="v.skuCode" nzSize="small" />
+                </td>
+                <td>
+                  <input nz-input [(ngModel)]="v.barcode" nzSize="small" />
+                </td>
+              </tr>
+            }
+          </tbody>
+        </nz-table>
+
+        @if (previewVariants().length === 0) {
+          <div class="text-center p-5 bg-white border-top">
+            <nz-empty nzNotFoundImage="simple" nzNotFoundContent="Configure atributos a la izquierda"></nz-empty>
+          </div>
+        }
+      </div>
+      
+      @if (previewVariants().length > 0) {
+        <div class="alert alert-info mt-3 py-2 px-3 small d-flex align-items-center">
+          <i nz-icon nzType="info-circle" class="me-2 text-primary"></i>
+          <span>Puede ajustar los SKUs y códigos de barras antes de guardar.</span>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Footer Estándar -->
+  <div class="erp-form-footer">
+    <button nz-button nzType="default" (click)="cancel()" [disabled]="isGenerating()" class="me-2">
+      Cancelar
+    </button>
+    <button nz-button nzType="primary" (click)="save()" [nzLoading]="isGenerating()" [disabled]="previewVariants().length === 0">
+      <i nz-icon nzType="save"></i> Crear Variantes
+    </button>
+  </div>
+</div>

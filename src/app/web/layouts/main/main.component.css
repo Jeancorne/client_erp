@@ -137,6 +137,15 @@ nz-content {
   padding: 24px;
   overflow-y: auto; /* Scroll independiente para el contenido de las páginas */
   flex: 1;
+  min-height: 0; /* Evita desbordamientos fantasma en flexbox */
+  display: flex;
+  flex-direction: column;
+}
+
+.inner-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 nz-footer {

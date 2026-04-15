@@ -1,0 +1,110 @@
+<div>
+  <app-breadcrumb [items]="breadcrumbItems"></app-breadcrumb>
+
+  <div class="body-content mt-3">
+    <nz-spin [nzSize]="'large'" [nzSpinning]="isLoading()" nzTip="Cargando...">
+      
+      <!-- HEADER CON ACCIONES -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex align-items-center gap-3">
+          <nz-select 
+            style="width: 300px;" 
+            [ngModel]="selectedCompanyId()" 
+            (ngModelChange)="selectedCompanyId.set($event); onCompanyChange($event)"
+            nzPlaceHolder="Seleccionar Empresa para filtrar"
+            nzShowSearch
+            nzAllowClear
+          >
+            @for (company of companies(); track company.id) {
+              <nz-option [nzValue]="company.id" [nzLabel]="company.name"></nz-option>
+            }
+          </nz-select>
+
+          <button nz-button nzType="default" (click)="loadInitialData()">
+            <i nz-icon nzType="reload"></i> Recargar
+          </button>
+        </div>
+        
+        <div class="d-flex gap-2">
+          @if (selectedCompanyId()) {
+            <button nz-button nzType="primary" (click)="addProduct()" class="btn-flex">
+              <i nz-icon nzType="plus"></i> Registrar Producto
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- CONTENEDOR DE TABLA -->
+      <div class="bg-white rounded shadow-sm overflow-hidden p-3">
+        <div class="mb-3" style="max-width: 450px;">
+          <app-table-filter 
+            [placeholder]="'Buscar por nombre, SKU o código de barras...'" 
+            [searchValue]="searchValue()" 
+            (searchChange)="searchValue.set($event)"
+          ></app-table-filter>
+        </div>
+
+        <nz-table 
+          #basicTable 
+          [nzData]="filteredProducts()" 
+          [nzLoading]="isLoading()" 
+          nzSize="middle" 
+          [nzBordered]="true"
+          [nzFrontPagination]="true"
+          [nzPageSize]="10"
+          nzTableLayout="fixed"
+        >
+          <thead>
+            <tr>
+              <th nzWidth="180px">Referencia SKU</th>
+              <th>Nombre del Producto</th>
+              <th nzWidth="180px">Categoría</th>
+              <th nzWidth="130px">Tipo</th>
+              <th nzWidth="160px" class="text-end">Costo Promedio</th>
+              <th nzWidth="120px" class="text-center">Estado</th>
+              <th nzWidth="140px" class="text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (data of basicTable.data; track data.id) {
+              <tr>
+                <td>
+                  <nz-tag [nzColor]="'blue'">{{ data.defaultCode }}</nz-tag>
+                </td>
+                <td>
+                  <div class="d-flex flex-column">
+                    <span class="fw-semibold">{{ data.name }}</span>
+                    @if (data.barcode) {
+                      <small class="text-muted" style="font-size: 10px;">{{ data.barcode }}</small>
+                    }
+                  </div>
+                </td>
+                <td>{{ categories()[data.invCategoryId] || 'Sin Categoría' }}</td>
+                <td>
+                  @switch (data.productType) {
+                    @case ('STOR') { <nz-tag nzColor="processing">Almacenable</nz-tag> }
+                    @case ('CONS') { <nz-tag nzColor="orange">Consumible</nz-tag> }
+                    @case ('SERV') { <nz-tag nzColor="magenta">Servicio</nz-tag> }
+                    @default { <nz-tag>{{ data.productType }}</nz-tag> }
+                  }
+                </td>
+                <td class="text-end">
+                  <span class="fw-bold">{{ data.purchaseCostAvg | currency }}</span>
+                </td>
+                <td class="text-center">
+                  <nz-badge [nzStatus]="data.isActive ? 'success' : 'error'"
+                    [nzText]="data.isActive ? 'Activo' : 'Inactivo'"></nz-badge>
+                </td>
+                <td class="text-center">
+                  <a class="text-primary pointer" (click)="editProduct(data)">Editar</a>
+                  <nz-divider nzType="vertical"></nz-divider>
+                  <a class="text-danger pointer" (click)="deleteProduct(data)">Eliminar</a>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </nz-table>
+      </div>
+    </nz-spin>
+  </div>
+</div>

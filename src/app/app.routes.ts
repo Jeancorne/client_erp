@@ -25,6 +25,10 @@ export const routes: Routes = [
         path: 'main',
         loadChildren: () => import('./web/features/core/routes').then(m => m.CORE_ROUTES)
       },
+      {
+        path: 'main',
+        loadChildren: () => import('./web/features/inventory/routes').then(m => m.INVENTORY_ROUTES)
+      },
       { path: '', pathMatch: 'full', redirectTo: 'main' },
     ]
   },

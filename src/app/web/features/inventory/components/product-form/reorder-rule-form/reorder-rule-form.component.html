@@ -1,0 +1,60 @@
+<form nz-form [formGroup]="ruleForm" nzLayout="vertical" class="erp-form-container">
+  <div class="erp-form-body p-4">
+    <div class="erp-form-panel">
+      <div nz-row [nzGutter]="16">
+        <div nz-col [nzSpan]="24">
+          <nz-form-item>
+            <nz-form-label nzRequired>Ubicación de Almacén</nz-form-label>
+            <nz-form-control nzErrorTip="Seleccione una ubicación">
+              <nz-select formControlName="invLocationId" nzPlaceHolder="Seleccionar ubicación" nzShowSearch>
+                @for (loc of locations(); track loc.id) {
+                  <nz-option [nzValue]="loc.id" [nzLabel]="loc.name"></nz-option>
+                }
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div nz-row [nzGutter]="16">
+        <div nz-col [nzSpan]="8">
+          <nz-form-item>
+            <nz-form-label nzRequired>Stock Mínimo</nz-form-label>
+            <nz-form-control nzErrorTip="Valor requerido">
+              <nz-input-number formControlName="minQuantity" [nzMin]="0" class="w-100"></nz-input-number>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+          <nz-form-item>
+            <nz-form-label nzRequired>Stock Máximo</nz-form-label>
+            <nz-form-control nzErrorTip="Valor requerido">
+              <nz-input-number formControlName="maxQuantity" [nzMin]="0" class="w-100"></nz-input-number>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+          <nz-form-item>
+            <nz-form-label nzRequired>Múltiplo de Orden</nz-form-label>
+            <nz-form-control nzErrorTip="Valor requerido (mín 1)">
+              <nz-input-number formControlName="multipleQuantity" [nzMin]="1" class="w-100"></nz-input-number>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div class="mt-3 alert alert-info py-2 px-3 small">
+        <i nz-icon nzType="info-circle"></i> Estas reglas disparan solicitudes de compra automáticas cuando el stock disponible cae por debajo del mínimo.
+      </div>
+    </div>
+  </div>
+
+  <div class="erp-form-footer">
+    <button nz-button nzType="default" (click)="cancel()" [disabled]="isLoading()" type="button" class="me-2">
+      Cancelar
+    </button>
+    <button nz-button nzType="primary" (click)="save()" [nzLoading]="isLoading()" type="button">
+      {{ isEdit ? 'Actualizar Regla' : 'Crear Regla' }}
+    </button>
+  </div>
+</form>

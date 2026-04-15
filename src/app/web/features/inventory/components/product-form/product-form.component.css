@@ -1,0 +1,70 @@
+.erp-form-container {
+  display: flex;
+  flex-direction: column;
+  /* Definimos la altura total del contenido del modal aquí */
+  height: 650px; 
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.erp-form-body {
+  flex: 1; /* Ocupa todo el espacio disponible */
+  overflow-y: auto; /* Solo esta parte tiene scroll */
+  padding: 0 24px;
+}
+
+.erp-form-panel {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #f0f0f0;
+  margin-bottom: 16px;
+}
+
+.erp-form-footer {
+  flex-shrink: 0; /* Prohibido encogerse */
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 24px;
+  border-top: 1px solid #f0f0f0;
+  background: #fff;
+  width: 100%;
+}
+
+.form-header-layout {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+
+.avatar-upload {
+  flex-shrink: 0;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.pt-3 {
+  padding-top: 1rem;
+}
+
+/* Scrollbar sutil para el body */
+.erp-form-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.erp-form-body::-webkit-scrollbar-thumb {
+  background: #d9d9d9;
+  border-radius: 3px;
+}
+
+/* Evitar que los tabs colapsen visualmente */
+:host ::ng-deep .ant-tabs-content-holder {
+  min-height: 450px;
+}
+
+:host ::ng-deep .ant-tabs-nav {
+  margin-bottom: 0 !important;
+}

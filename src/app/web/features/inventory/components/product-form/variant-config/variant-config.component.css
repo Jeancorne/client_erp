@@ -1,0 +1,81 @@
+.erp-form-container {
+  display: flex;
+  flex-direction: column;
+  height: 680px; /* Altura total del modal */
+  width: 100%;
+  overflow: hidden;
+}
+
+.erp-form-body {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden; /* El cuerpo principal no scrollea */
+  background-color: #fff;
+}
+
+.config-sidebar {
+  width: 380px;
+  flex: 0 0 380px;
+  height: 100%;
+  overflow-y: auto !important; /* Scroll independiente para atributos */
+  background-color: #fafafa;
+  border-right: 1px solid #f0f0f0;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.preview-content {
+  flex: 1;
+  height: 100%;
+  overflow-y: auto !important; /* Scroll independiente para tabla */
+  background-color: #ffffff;
+  padding: 16px;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.erp-form-footer {
+  flex-shrink: 0; /* Evita que el footer se achique o se mueva */
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 24px;
+  border-top: 1px solid #f0f0f0;
+  background: #fff;
+  z-index: 10;
+}
+
+.attribute-card {
+  background: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.preview-table-wrapper {
+  margin-top: 8px;
+  border: 1px solid #f0f0f0;
+  border-radius: 4px;
+}
+
+/* Scrollbars Estilizados */
+.config-sidebar::-webkit-scrollbar,
+.preview-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.config-sidebar::-webkit-scrollbar-thumb,
+.preview-content::-webkit-scrollbar-thumb {
+  background: #d9d9d9;
+  border-radius: 3px;
+}
+
+.fw-bold { font-weight: 700; }
+.text-secondary { color: #595959; }
+.small { font-size: 12px; }
+
+:host ::ng-deep .ant-table-wrapper {
+  background: white;
+}

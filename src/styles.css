@@ -20,7 +20,7 @@ body {
 }
 
 /* Clases de utilidad personalizadas */
-.inner-content {  
+.inner-content {
   /* background: #fff;   */
   min-height: 100%;
 }
@@ -38,7 +38,7 @@ body {
 .erp-form-body {
   flex: 1;
   overflow-y: auto;
-  padding: 24px;
+  padding: 24px;  
 }
 
 /* Footer fijo en la parte inferior */
@@ -56,13 +56,16 @@ body {
 .erp-form-body::-webkit-scrollbar {
   width: 6px;
 }
+
 .erp-form-body::-webkit-scrollbar-thumb {
   background: #d9d9d9;
   border-radius: 10px;
 }
+
 .erp-form-body::-webkit-scrollbar-thumb:hover {
   background: #bfbfbf;
 }
+
 .erp-form-body::-webkit-scrollbar-track {
   background: transparent;
 }
@@ -82,6 +85,7 @@ body {
   .erp-form-container {
     max-height: 85vh;
   }
+
   .erp-form-body {
     padding: 15px;
   }
