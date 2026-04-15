@@ -36,14 +36,6 @@
 
       <!-- CONTENEDOR DE TABLA -->
       <div class="bg-white rounded shadow-sm overflow-hidden p-3">
-        <div class="mb-3" style="max-width: 450px;">
-          <app-table-filter 
-            [placeholder]="'Buscar por nombre, SKU o código de barras...'" 
-            [searchValue]="searchValue()" 
-            (searchChange)="searchValue.set($event)"
-          ></app-table-filter>
-        </div>
-
         <nz-table 
           #basicTable 
           [nzData]="filteredProducts()" 
@@ -56,12 +48,24 @@
         >
           <thead>
             <tr>
-              <th nzWidth="180px">Referencia SKU</th>
-              <th>Nombre del Producto</th>
+              <th nzWidth="180px" nzShowSort [nzSortFn]="sortSKU">Referencia SKU</th>
+              <th nzCustomFilter nzShowSort [nzSortFn]="sortName" class="header-with-filter">
+                <span class="column-title">Nombre del Producto</span>
+                <app-table-filter 
+                  [placeholder]="'Buscar por nombre, SKU...'" 
+                  [searchValue]="searchValue()" 
+                  (searchChange)="searchValue.set($event)"
+                ></app-table-filter>
+              </th>
               <th nzWidth="180px">Categoría</th>
-              <th nzWidth="130px">Tipo</th>
-              <th nzWidth="160px" class="text-end">Costo Promedio</th>
-              <th nzWidth="120px" class="text-center">Estado</th>
+              <th nzWidth="150px" 
+                [nzFilters]="typeFilterOptions" 
+                (nzFilterChange)="filterType.set($event)">Tipo</th>
+              <th nzWidth="160px" class="text-end" nzShowSort [nzSortFn]="sortCost">Costo Promedio</th>
+              <th nzWidth="130px" class="text-center"
+                [nzFilters]="statusFilterOptions"
+                [nzFilterMultiple]="false"
+                (nzFilterChange)="filterStatus.set($event)">Estado</th>
               <th nzWidth="140px" class="text-center">Acciones</th>
             </tr>
           </thead>

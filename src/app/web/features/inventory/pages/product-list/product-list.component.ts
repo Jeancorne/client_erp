@@ -63,16 +63,53 @@ export class ProductListComponent implements OnInit {
   
   isLoading = signal<boolean>(false);
   searchValue = signal<string>('');
+  
+  // Filtros de Columna
+  filterType = signal<string[]>([]);
+  filterStatus = signal<boolean | null>(null);
+
+  typeFilterOptions = [
+    { text: 'Almacenable', value: 'STOR' },
+    { text: 'Consumible', value: 'CONS' },
+    { text: 'Servicio', value: 'SERV' }
+  ];
+
+  statusFilterOptions = [
+    { text: 'Activo', value: true },
+    { text: 'Inactivo', value: false }
+  ];
+
+  // Funciones de Ordenamiento
+  sortSKU = (a: Product, b: Product) => a.defaultCode.localeCompare(b.defaultCode);
+  sortName = (a: Product, b: Product) => a.name.localeCompare(b.name);
+  sortCost = (a: Product, b: Product) => a.purchaseCostAvg - b.purchaseCostAvg;
 
   filteredProducts = computed(() => {
+    let list = this.products();
     const term = this.searchValue().toLowerCase();
-    const list = this.products();
-    if (!term) return list;
-    return list.filter(item => 
-      item.name.toLowerCase().includes(term) || 
-      item.defaultCode.toLowerCase().includes(term) ||
-      item.barcode.toLowerCase().includes(term)
-    );
+    const types = this.filterType();
+    const status = this.filterStatus();
+
+    // 1. Filtro por Texto
+    if (term) {
+      list = list.filter(item => 
+        item.name.toLowerCase().includes(term) || 
+        item.defaultCode.toLowerCase().includes(term) ||
+        item.barcode?.toLowerCase().includes(term)
+      );
+    }
+
+    // 2. Filtro por Tipo (Multiselect)
+    if (types.length > 0) {
+      list = list.filter(item => types.includes(item.productType));
+    }
+
+    // 3. Filtro por Estado
+    if (status !== null) {
+      list = list.filter(item => item.isActive === status);
+    }
+
+    return list;
   });
 
   ngOnInit() {

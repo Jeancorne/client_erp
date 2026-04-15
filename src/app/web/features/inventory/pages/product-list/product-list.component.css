@@ -6,6 +6,16 @@
   cursor: pointer;
 }
 
+.header-with-filter {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.column-title {
+  flex: 1;
+}
+
 .fw-semibold {
   font-weight: 600;
 }

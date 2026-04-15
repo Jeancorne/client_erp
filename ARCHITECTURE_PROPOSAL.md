@@ -4,80 +4,66 @@ Esta arquitectura es el "Sistema Operativo" del frontend. Utiliza **Angular 21.2
 
 ---
 
-## 1. 📂 Estructura de Directorios por Dominios (Domain-Driven)
+## 1. 📂 Estructura de Directorios y Organización de Código
 
-La organización sigue la lógica del negocio, no solo la del framework.
+### 1.1 Modelos (DTOs) por Tabla
+Los modelos no deben agruparse en un solo archivo. Cada tabla/entidad debe tener su propia carpeta para permitir múltiples DTOs (Create, Update, List).
+- **Ruta:** `src/app/core/models/[modulo]/[entidad]/`
+- **Archivos:** `[entidad].model.ts`, `index.ts` (Barrel pattern).
+- **Regla:** Reutilizar modelos del modulo `core` (ej: `CompanyLookup`) en lugar de duplicarlos.
 
-```text
-src/app/
-├── core/                       # LÓGICA GLOBAL (Single Source of Truth)
-│   ├── services/               # Servicios transversales (Auth, Notification, Storage)
-│   ├── models/                 # MODELOS POR DOMINIO (Importante para IA)
-│   │   └── [modulo]/           # Ej: accounting, sales, core
-│   │       ├── [tabla].model.ts # Interfaz TypeScript que espeja la DB
-│   │       └── index.ts        # Barril de exportación por módulo
-│   ├── state/                  # Estado global (SignalStores)
-│   ├── guards/                 # Protectores de rutas (Funcionales)
-│   └── interceptors/           # Interceptores HTTP (Funcionales)
-│
-├── web/                        # CAPA VISUAL (UI/UX)
-│   ├── layouts/                # Estructuras maestras (Main, Auth, Print)
-│   ├── shared/                 # UI KIT (Componentes 100% reutilizables y puros)
-│   │   ├── components/         # Botones, Tablas genéricas, Inputs dinámicos
-│   │   ├── pipes/              # Formateadores (Currency, Date, ERP_Translate)
-│   │   └── directives/         # Comportamientos (InputUpperCase, Permissions)
-│   │
-│   └── features/               # MÓDULOS DE NEGOCIO (Entidades ERP)
-│       └── [modulo]/           # Ej: inventory, core, finance
-│           ├── pages/          # SMART COMPONENTS (Contenedores de lógica y orquestación)
-│           │   └── [feature]/  # Ej: location, user-list, sale-order-form
-│           ├── components/     # DUMB COMPONENTS (UI específica del módulo)
-│           ├── services/       # Servicios específicos del módulo (API calls)
-│           └── routes.ts       # Enrutamiento del módulo (Lazy Loaded)
-```
+### 1.2 Servicios Granulares
+Siguiendo el principio de responsabilidad única, cada entidad debe tener su propio servicio.
+- **Ruta:** `src/app/core/services/[modulo]/[entidad].service.ts`
+- **Regla:** Usar `environment.apiInventory` o `environment.apiUrl` según el dominio.
 
 ---
 
-## 2. 🧩 Anatomía de Componentes (Smart vs Dumb)
+## 2. 🧩 Estándares de UI/UX (Layouts Maestros)
 
-### A. Pages (Smart Components) - `features/[modulo]/pages/`
-- **Responsabilidad:** Gestionar el estado, llamar a servicios, orquestar datos y manejar navegación.
-- **Regla:** No contienen CSS complejo, solo estructura.
-- **Interacción:** Usan `Signals` para reaccionar a cambios de datos. Consumen servicios del módulo.
+### 2.1 Estructura de Páginas (Pages)
+Todas las páginas de listado deben seguir la estructura de `core/pages/partner` o `core/pages/branch`.
+```html
+<div>
+  <app-breadcrumb [items]="breadcrumbItems"></app-breadcrumb>
+  <div class="body-content mt-3">
+    <nz-spin [nzSpinning]="isLoading()">
+      <!-- Header con acciones (Select empresa, Registrar) -->
+      <!-- Tabla con filtros en cabecera -->
+    </nz-spin>
+  </div>
+</div>
+```
 
-### B. Components (Dumb Components) - `features/[modulo]/components/` o `shared/`
-- **Responsabilidad:** Presentar datos y emitir eventos.
-- **Regla:** Reciben datos vía `@Input` (Signals preferred) y notifican vía `Output`.
+### 2.2 Tablas con Filtros Integrados
+No usar barras de búsqueda externas arriba de la tabla si se puede integrar en la cabecera.
+- **Búsqueda:** Usar `nzCustomFilter` con `app-table-filter` dentro del `<th>`.
+- **Filtros:** Usar `[nzFilters]` para estados o tipos.
+- **Orden:** Usar `[nzSortFn]` para columnas críticas (SKU, Nombre, Fecha).
+
+### 2.3 Estándar de Formulario (Modales y Drawers)
+Para garantizar que los botones de acción nunca se pierdan y el modal mantenga un tamaño profesional constante, usar las clases:
+- `erp-form-container`: Contenedor raíz del formulario (Flex column).
+- `erp-form-body`: Cuerpo del formulario con `flex: 1` y `overflow-y: auto`.
+- `erp-form-footer`: Pie de página fijo con botones de acción.
 
 ---
 
 ## 3. 🚦 Gestión de Estado y Datos (Signals First)
 
-1.  **Servicios de API:** Deben retornar `Observable` pero el componente debe transformarlos en `Signal` usando `toSignal()` o manejarlos mediante `signal()` para estados mutables.
-2.  **Estado Local:** Usar `signal()`, `computed()` y `effect()` para lógica reactiva sin Zone.js.
-
-```typescript
-// Ejemplo de Smart Component (Page)
-export class UserListPage {
-  private userService = inject(UserService);
-  
-  // Signal de estado obtenido de API
-  users = toSignal(this.userService.getAll(), { initialValue: [] });
-  
-  // Computed para filtros reactivos
-  activeUsers = computed(() => this.users().filter(u => u.is_active()));
-}
-```
----
-
-## 5. 🛠️ Estándares de Codificación (Best Practices)
-
-- **Naming:** 
-  - Archivos: `kebab-case` (ej: `sale-order.model.ts`).
-  - Clases: `PascalCase` (ej: `SaleOrderComponent`).
-- **Standalone:** Prohibido usar `NgModule`. Cada componente importa exactamente lo que necesita.
-- **Zoneless:** No usar `setTimeout` o `setInterval` de forma nativa para lógica de negocio; preferir `rxjs` o utilitarios de Angular. La detección de cambios es automática vía Signals.
-- **Type Safety:** Prohibido el uso de `any`. Todo debe estar tipado en `core/models/[modulo]/`.
+1.  **Reactividad:** Usar `computed()` para filtros combinados (Texto + Columna + Empresa).
+2.  **Zoneless:** No usar `setTimeout` nativo; la detección de cambios es automática vía Signals.
+3.  **Type Safety:** Prohibido el uso de `any`. Las respuestas de API deben tiparse con `ApiResponse<T>`.
 
 ---
-**Estado:** Especificación Activa | **Versión:** 2.0 | **Framework:** Angular 21 (Zoneless)
+
+## 4. 📚 Referencias de Implementación (Ejemplos Reales)
+
+Para nuevas funcionalidades, la IA debe basarse en estos archivos:
+- **Listado Estándar:** `src/app/web/features/inventory/pages/product-list/`
+- **Formulario Complejo (Tabs):** `src/app/web/features/inventory/components/product-form/`
+- **Configurador Pro (Split View):** `src/app/web/features/inventory/components/product-form/variant-config/`
+- **Servicio Granular:** `src/app/core/services/inventory/product.service.ts`
+
+---
+**Estado:** Especificación Activa | **Versión:** 3.0 | **Framework:** Angular 21 (Zoneless)
